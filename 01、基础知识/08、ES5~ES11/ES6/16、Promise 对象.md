@@ -1,0 +1,1 @@
+详见 node 中的 13-promise 对象（中）.js

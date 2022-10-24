@@ -1,0 +1,31 @@
+知识点：接口使用
+
+文档：https://api.it120.cc/doc.html#/home
+
+说明：
+  1、application/x-www-form-urlencoded 方式，千万不要用 Json 的方式提交参数，否则接口会返回缺少参数的提示
+
+设置专属域名
+  https://admin.it120.cc/ → 首页 → 专属域名 → 设置为：zcr
+
+小程序配置
+  https://admin.it120.cc/ → 微信设置 → 小程序设置 → 配置 Appid / Secret → 配置 appID、appIDSecret
+
+个人配置存储（每个用户都不一样）
+  AppID(小程序ID)：wx916760d267fed5ff
+  AppSecret(小程序密钥)：e880a3ac40748a0629143907df9b94ef
+
+数据克隆
+  登录后台，左侧菜单 “工厂设置” --> “数据克隆” --> “将别人的数据克隆给我” → 对方商户ID填写 951
+
+请求根路径：https://api.it120.cc/zcr
+
+语法：domain：https://api.it120.cc/专属域名
+例：domain：https://api.it120.cc/zcr
+
+获取 banner 列表接口：/{domain}/banner/list
+例：https://api.it120.cc/zcr/banner/list
+
+商品详情页：
+  （1）图片之间有空白间隙
+    解决方法：不用管它，后面渲染的时候通过 vertical-align: bottom; 就可以解决了

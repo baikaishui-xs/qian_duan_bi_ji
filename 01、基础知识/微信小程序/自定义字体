@@ -1,0 +1,37 @@
+字体包格式：.ttf
+
+方式一：base64（推荐）
+
+  （1）将字体转换为 base64
+    在线转换工具：https://transfonter.org/
+    Add fonts（上传字体包） → 开启 Base64 encode → 开启 TTF → Convert（转换）→ Download
+
+  （2）全局引入
+    将 stylesheet 中的内容复制到 app.wxss 中
+
+  （3）设置字体名称
+    font-family: '字体名称'
+
+  （4）使用
+    font-family: '字体名称'
+
+方式二：wx.loadFontFace(OBJECT) 接口
+
+  （1）在 onLoad 中调用 wx.loadFontFace(OBJECT) 接口（-- 组件）
+    onLoad: function (options) {
+      // 加载字体接口
+      wx.loadFontFace({
+        // 字体名字
+        family: "PingFangSC-Medium"
+        // 字体包存放路径
+        source: "url(/static/font/PingFang Medium.ttf)"
+        // 成功时调用
+        success: function() {
+          // 字体加载成功
+          console.log('load font success!')
+        }
+      })
+    }
+
+  （2）使用
+    font-family: 'PingFangSC-Medium'

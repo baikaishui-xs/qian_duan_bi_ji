@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>serialize方法说明</title>
+</head>
+<body>
+	<form id="form">
+		<input type="text" name="username">
+		<input type="password" name="password">
+		<input type="submit" value="提交">
+	</form>
+	<script src="/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        // 知识点：serialize 方法
+
+        // 作用：将表单中的数据自动拼接成字符串格式的参数   格式为：参数名=参数值 以&分隔
+        // 解决：使用 $.ajax 发送请求时，手动拼接参数格式的问题
+            // 如：获取获取表单元素控件，获取用户输入的表单值，将用户输入的表单值拼接成字符串类型的参数
+        // 特性：FormData 对象就可以解决这个问题，但是低版本浏览器不兼容
+        // 返回值：拼接好的字符串
+
+		$('#form').on('submit', function () {
+
+            // 将表单中用户输入的内容转换为对象类型  如：{username: 12345678, password: 88888888}
+            serializeObject($(this));
+
+            // 阻止表单默认提交行为
+			return false;
+		});
+
+        // serializeObject 作用：将表单中用户输入的内容转换为对象类型
+            // obj：表单对象
+		function serializeObject (obj) {
+			// 用于存储 将数组转换为对象的数据
+			var result = {};
+            
+            // serializeArray() ：将表单中用户输入的内容转换为数组
+                // 如：[{name: 'username', value: '12345678'}, {name: 'password', value: '88888888'}]
+			var params = obj.serializeArray();
+
+			// 循环数组 将数组转换为对象类型
+			$.each(params, function (index, value) {
+				result[value.name] = value.value;
+            })
+            
+			// 将处理的结果返回到函数外部
+			return result;
+		}
+
+	</script>
+</body>
+</html>

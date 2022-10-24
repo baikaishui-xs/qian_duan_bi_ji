@@ -1,0 +1,37 @@
+知识点：uni-ui
+
+文档：https://uniapp.dcloud.io/component/uniui/uni-ui
+
+特性：
+  （1）是一个跨端 ui 库，基于 vue 组件、flex 布局、无 dom 的跨全端 ui 框架
+
+  （2）不包括基础组件，它是基础组件的补充，如：数字角标、日历、卡片、折叠面板、倒计时、抽屉、悬浮按钮、收藏按钮、底部购物导航、宫格、图标、索引列表、列表、加载更多、自定义导航栏、通告栏、数字输入框、分页器、弹出层、评分、搜索栏、分段器、步骤条、滑动操作、轮播图知识点、标签
+
+使用步骤：
+  （1）下载
+    npm i @dcloudio/uni-ui@1.1.5
+
+  （2）导入（-- 组件）
+    import { uniBadge } from '@dcloudio/uni-ui'
+
+  （3）注册（-- 同上）
+    components: {
+      uniBadge
+    }
+
+  （4）使用
+    <uni-badge text="1"></uni-badge>
+    <uni-badge text="2" type="success" @click="bindClick"></uni-badge>
+    <uni-badge text="3" type="primary" :inverted="true"></uni-badge>
+
+【报错】
+  问题：使用 uni-ui 组件报错的问题
+  解决方法：
+    （1）在项目根目录新建 vue.config.js，并添加以下代码
+      module.exports = {
+        transpileDependencies: ['@dcloudio/uni-ui']
+      }
+
+    （2）安装 sass-loader@7.3.1、node-sass@4.14.1 版本
+      卸载：npm uninstall sass-loader node-sass
+      安装：npm i sass-loader@7.3.1 node-sass@4.14.1

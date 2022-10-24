@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态 import </title>
+</head>
+<body>
+    <!-- 知识点：动态 import
+        作用：按需加载（懒加载）。需要的时候在加载这个模块，不需要这个模块的时候不加载
+    -->
+    <button id="btn">点击</button>
+    <script src="./js/app.js" type="module"></script>
+</body>
+</html>
+
+<!-- app.js -->
+<script>
+    // 静态 import
+    import * as m1 from "./hello.js";
+
+    const btn = document.getElementById('btn');
+
+    btn.onclick = function () {
+        // 动态 import
+        import('./hello.js').then(module => {
+            module.hello();
+        });
+    }
+</script>
+
+<!-- hello.js -->
+<script>
+    export function hello() {
+        alert('hello')
+    }
+</script>

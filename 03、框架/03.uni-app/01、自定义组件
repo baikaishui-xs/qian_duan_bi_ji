@@ -1,0 +1,28 @@
+知识点：自定义组件
+
+使用步骤：
+  （1）创建组件
+    1、创建 components 目录 → 右键 components 目录 → 新建组件
+
+    2、输入组件名称（建议开头都带 my-，方便区分其它的组件）
+
+    3、选择模板：使用 scss 的模板组件
+
+    4、勾选创建同名目录
+
+  （2）使用组件
+    <组件></组件>
+
+特性
+  （1）点击事件无效
+    <my-search @click="gotoSearch"></my-search>
+
+    说明：因为这个自定义组件没有封装点击事件，所以这里绑定点击事件是无效的
+    解决步骤（-- 自定义组件）：
+      （1）为自定义组件中的 template 里的子元素添加点击事件
+        <view class="category-container" @click="searchBoxHandler">
+
+      （2）定义方法，通过 this.$emit() 方法触发 gotoSearch 事件
+        searchBoxHandler() {
+          this.$emit('myclick')
+        }

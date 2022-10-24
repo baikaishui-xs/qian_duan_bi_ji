@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button id="btn">发送Ajax请求</button>
+	<script type="text/javascript">
+        // 知识点：低版本 IE 浏览器的缓存问题
+        
+        /* 
+            问题：在低版本的 IE 浏览器中，Ajax 请求有严重的缓存问题。当客户端第一次向服务端发送请求时，客户端能够接收到服务端的响应数据，当客户端第二次向同一个服务器端的同一个地址发送请求时，即使服务器端的响应数据发生了变化，但是客户端得到的结果依然是第一次向服务端发送的请求的结果，因为IE浏览器在第二次发送请求时，发现请求地址并没有变化，这时IE浏览器并没有真正的向服务端发送请求，而是将上一次的请求结果，从浏览器的缓存中取出来，直接返回给用户
+
+            解决方法：在请求地址的后面添加随机请求参数，保证每一次请求中的请求参数都不同
+            xhr.open('get', 'http://www.example.com?t=' + Math.random());
+        */
+
+		var btn = document.getElementById('btn');
+
+		btn.onclick = function () {
+			var xhr = new XMLHttpRequest();
+			xhr.open('get', 'http://localhost:3000/cache?t=' + Math.random());
+			xhr.send();
+			// IE 低版本浏览器不兼容 onload 事件，所以使用 onreadystatechange 事件
+			xhr.onreadystatechange = function (){
+				if (xhr.readyState == 4 && xhr.status == 200) {
+					alert(xhr.responseText);
+				}
+			}
+		}
+
+	</script>
+</body>
+</html>

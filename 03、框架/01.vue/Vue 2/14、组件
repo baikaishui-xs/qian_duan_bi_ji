@@ -1,0 +1,233 @@
+组件：将可复用的 UI 结构封装为组件，从而方便项目的开发和维护
+    特性：后缀名为 vue 的都是组件
+
+    组件有三部分构成：
+        （1）template -> 组件的 模板结构
+        （2）script   -> 组件的 JS（可选）
+        （3）style    -> 组件的 样式（可选）
+
+常用组件库：element-ui、Vant
+
+-- Test.vue
+
+    <template>
+        <div>
+            <div class="test-box">
+            <h3>这是用户自定义的 Test.vue --- {{ username }}</h3>
+            <button @click="chagneName">修改用户名</button>
+            </div>
+
+            // 注意：template 中不能出现两个根节点    解决方法：在外层包一个根节点
+            <div>123</div>
+        </div>
+    </template>
+
+    <script>
+        // 默认导出。这是固定写法！
+        export default {
+
+            // 在使用 vue-devtools 进行项目调试的时候，自定义的组件名称可以清晰的区分每个组件
+            // 组件名使用 帕斯卡命名法
+            name: 'MyApp',
+
+            // 当前组件的 数据
+            // 注意：组件中的 data 不能像之前一样 指向组件的实例对象，所以这个 data 必须是一个函数
+            data() {
+                // 在 return 对象中定义数据
+                return {
+                    username: 'admin'
+                }
+            },
+
+            // 当前组件的 方法
+            methods: {
+                chagneName() {
+                    // 在组件中，this 就表示当前组件的实例对象
+                    this.username = '哇哈哈'
+                }
+
+                // 当方法只有简单的一行时，适合写在标签中
+                <button @click="count += 1">+1</button>
+            },
+
+            // 当前组件的 侦听器
+            watch: {},
+
+            // 当前组件的 计算属性
+            computed: {},
+
+            // 当前组件的 过滤器
+            filters: {}
+
+        }
+    </script>
+
+    允许使用 less 语法
+        // 1、下载 npm i less -D
+        // 2、lang="less"：开启 less 语法
+    <style lang="less">
+        .test-box {
+            background-color: pink;
+            h3 {
+                color: red;
+            }
+        }
+    </style>
+
+注册组件：
+    组件注册名称命名方式：
+        kebab-case 命名法（俗称 短横线命名法  如：my-swiper）
+        PascalCase 命名法（俗称 帕斯卡命名法 或 大驼峰命名法  如 MySwiper，每个单词首字母大写）（再使用时，可以写成 短横线命名法）（推荐）
+
+
+    全局组件：允许在任何组件中使用
+    使用场景：组件使用频率很高时
+    特性：永远不会被销毁，会降低性能
+    -- main.js
+        （1）导入需要全局注册的组件
+            import Swiper from './components/MySwiper.vue'
+            import Test from './components/Test.vue'
+
+        （2）调用 app.component() 方法注册全局组件
+            app.component(Swiper.name, Swiper)
+            app.component(Test.name, Test)
+
+    局部组件：只能在当前组件中使用
+    使用场景：组件使用频率很低时
+        （1）导入需要局部注册的组件
+            import Search from './components/MySearch.vue'
+
+        （2）在 export default 里的 components 节点中注册全局组件
+            export default {
+                components: {
+                    Search.name: Search,
+                }
+            }
+
+知识点：组件的父子关系
+
+    作用：在一个组件中使用其它组件
+
+    特性：
+        1、组件在封装好后，彼此之间是相互独立的
+        2、只有在使用组件的时候，才会产生父子关系
+    
+    使用步骤：
+        1、导入 子组件
+            import Left form '@/components/Left.vue'
+
+        2、在父组件的 components 节点中注册组件
+            export default {
+                components: {
+                    Left,
+                    Right
+                }
+            }
+
+        3、以标签形式使用注册的组件
+            <div class="box">
+                <Left><Left>
+                <Right><Right>
+            </div>
+
+
+私有 子组件：
+    特性：
+        1、在其它组件中的 模板结构 中 不可以 使用该组件
+        2、通过 components 注册的组件就是 私有子组件
+
+全局 子组件：
+    特性：
+        1、在其它组件中的 模板结构 中 可以 使用该组件
+        2、通过 Vue.component 注册的组件就是 全局子组件
+    使用步骤：
+        在 main.js 入口文件中操作
+            1、导入 全局组件
+                import Count from '@/components/Count.vue'
+
+            2、注册全局组件：Vue.component('注册后的组件名', 注册的组件) 
+                Vue.component('MyCount', Count)
+
+            3、以标签形式使用注册的组件
+                <div class="box">
+                    <MyCount><MyCount>
+                </div>
+
+
+组件之间的样式冲突
+    问题：默认组件中的 样式 会全局生效，导致组件之间的样式冲突 问题
+
+    解决方法一：使用 自定义属性（data-v-标识符）
+        使用步骤：
+            1、定义 自定义属性
+            2、使用 属性选择器
+
+        -- 组件A
+            <template>
+                <div class="left-container" data-v-001>
+                    <h3 data-v-001>Left 组件</h3>
+                    <hr data-v-001></hr>
+                    <MyCount :init="9" data-v-001></MyCount>
+                </div>
+            </template>
+            <style lang="less">
+                h3[v-data-001] {
+                    color: red;
+                }
+            </style>
+
+        -- 组件B
+            <template>
+                <div class="left-container" data-v-002>
+                    <h3 data-v-002>Left 组件</h3>
+                    <hr data-v-002></hr>
+                    <MyCount :init="9" data-v-002></MyCount>
+                </div>
+            </template>
+            <style lang="less">
+                h3[v-data-002] {
+                    color: red;
+                }
+            </style>
+
+    解决方法二：在 style 中添加 scoped 属性（推荐）
+        底层原理：内部自动 添加自定义属性 如解决方法一    如：h5[data-v-3c83f0b7]
+
+        -- 组件A
+            <template>
+                <div class="left-container">
+                    <h3>Left 组件</h3>
+                    <hr></hr>
+                    <MyCount :init="9"></MyCount>
+                </div>
+            </template>
+            <style lang="less" scoped>
+                h3 {
+                    color: red;
+                }
+            </style>
+
+        -- 组件B
+            <template>
+                <div class="left-container">
+                    <h3>Left 组件</h3>
+                    <hr></hr>
+                    <MyCount :init="9"></MyCount>
+                </div>
+            </template>
+            <style lang="less" scoped>
+                h3 {
+                    color: red;
+                }
+            </style>
+
+在 父组件中 给 子组件 添加样式
+    方法：添加 /deep/（深度选择器）
+    原理：属性选择器 后代选择器    如：[data-v-3c83f0b7] h5
+    使用场景：修改 第三方组件库 的样式时使用 如：element-ui、Vant 
+
+    <style lang="less" scoped>
+        /deep/ h3 {
+            color: red;
+        }
+    </style>

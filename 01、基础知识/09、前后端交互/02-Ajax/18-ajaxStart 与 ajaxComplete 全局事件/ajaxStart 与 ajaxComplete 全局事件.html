@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Todo List</title>
+	<link rel="stylesheet" href="nprogress.css">
+</head>
+
+<body>
+	<script src="jquery.min.js"></script>
+	<script src="nprogress.js"></script>
+	<script type="text/javascript">
+		// 知识点：ajaxStart 和 ajaxComplete 全局事件
+		// 使用场景：当有 Ajax 发送时，给用户一个提示（该功能在网速比较慢时，尤其有用）
+		// 特性：
+		// 1、beforeSend 也可以做这个功能，但是页面中的 Ajax 请求比较多时，需要在每个请求的代码中加入让提示元素显示的代码和隐藏的代码，导致代码的重复率比较高
+		// 2、Ajax 全局事件必须绑定在 document 身上
+		// 使用步骤：（1）（2）
+
+		// NProgress
+		// 作用：Ajax 加载进度条
+		// 使用步骤：
+		// 1、引入 nprogress.css 
+		// 2、引入 nprogress.js
+
+		// ajaxStart
+		// 作用：当Ajax请求 发送 时触发
+
+		// ajaxComplete
+		// 作用：当Ajax请求 完成 时触发
+
+		// （1）当页面中有ajax请求发送时触发
+		$(document).on('ajaxStart', function () {
+			NProgress.start()
+		})
+
+		// （2）当页面中有ajax请求完成时触发
+		$(document).on('ajaxComplete', function () {
+			NProgress.done()
+		})
+
+		$.ajax({
+			url: '/todo/task',
+			type: 'get',
+			success: function (response) {
+				taskAry = response;
+				render();
+				calcCount()
+			}
+		})
+
+	</script>
+</body>
+
+</html>

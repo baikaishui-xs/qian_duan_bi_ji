@@ -1,0 +1,53 @@
+项目准备：
+  1、npm init -y（创建 包管理配置文件）
+  2、npm install koa（下载最新版本 koa2）
+  3、创建 app.js（项目入口文件）
+  4、创建 middleware（存放中间件）
+    - 创建 koa_response_duration.js（计算服务器响应时长中间件）
+    - 创建 koa_response_header.js（响应头中间件）
+    - 创建 koa_response_data.js（业务逻辑中间件）
+    - 创建 utils/file_utils.js（快速读取某个目录之下的文件）
+
+后台项目搭建：
+  （1）定义 计算服务器响应时长中间件
+  （2）定义 响应头中间件
+  （3）定义 业务逻辑中间件
+  （4）允许跨域
+
+前端项目搭建：
+  （1）vue create vision（使用 vue-cli 脚手架快速搭建项目）
+  （2）删除无关代码
+    - App.vue 中 id="app" 元素 和 style 元素里的内容
+    - 删除 components 目录里的所有文件
+    - 删除 views 目录里的所有文件
+  （3）引入静态资源（这里直接把老师的 static 复制到 public 目录下了）
+  （4）在根目录创建 vue.config.js 文件，并添加以下代码
+    module.exports = {
+      devServer: {
+        port: 8999,  //  定义端口号
+        open: true  // 执行 npm run serve 命令后是否自动打开浏览器
+      }
+    }
+  （5）将 echarts 挂载到全局对象上
+  （6）将全局的 echarts 对象挂载到 vue 的原型对象上（别的组件就可以直接 this.$echarts 使用了）
+  （7）npm i axios
+  （8）引入 axios，并配置请求基准路径
+  （9）将 axios 挂载到 vue 的原型对象上
+
+接口：
+  （1）商家销量：/api/seller
+  （2）预算开销：/api/budget
+  （3）库存信息：/api/stock
+  （4）销量趋势：/api/trend
+  （5）销量排行：/api/rank
+  （6）商家发布：/api/map
+  （7）热销商品：/api/hotproduct
+
+单独图标组件开发：
+  一、商家销售统计
+    - 组件结构：
+      SellerPage.vue：在 /sellerpage 路径下全屏展示
+      Seller.vue：呈现图标组件
+  二、销量趋势图标
+  三、热销商品占比模块
+  四、库存与销量模块

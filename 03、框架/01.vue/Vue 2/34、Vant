@@ -1,0 +1,33 @@
+知识点：Vant
+
+介绍：主流的移动端组件库
+
+文档：https://vant-contrib.gitee.io/vant/#/zh-CN/home46px  0
+
+安装：
+  Vue2 版本：npm i vant -S
+  Vue3 版本：npm i vant@next -S
+
+引入组件：
+  方式三：导入所有组件（该方式官方虽然不推荐，因为这会导致项目体积增加，但是在开发阶段不需要考虑体积问题，这种方式最简单也最舒服，在发布阶段会进行项目体积的优化，会把 Vant 直接从项目中抽离，所以不需要担心）
+  具体打包优化文档：http://doc.toutiao.liulongbin.top/mds/15.build.html#_15-4-%E5%9F%BA%E4%BA%8E-externals-%E9%85%8D%E7%BD%AE-cdn-%E5%8A%A0%E9%80%9F
+  -- main.js
+    import Vant from 'vant'
+    import 'vant/lib/index.css'
+    Vue.use(Vant)
+
+
+使用方式：
+  复制现成的组件结构到模板结构中
+  如：
+    <template>
+      <div id="app">
+
+        <van-button type="primary">主要按钮</van-button>
+        <van-button type="info">信息按钮</van-button>
+        <van-button type="default">默认按钮</van-button>
+        <van-button type="warning">警告按钮</van-button>
+        <van-button type="danger">危险按钮</van-button>
+
+      </div>
+    </template>

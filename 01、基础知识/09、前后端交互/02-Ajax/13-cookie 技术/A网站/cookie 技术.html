@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>实现跨域功能</title>
+	<link rel="stylesheet" href="assets/bootstrap/dist/css/bootstrap.min.css">
+	<style type="text/css">
+		.container {
+			padding-top: 60px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<form id="loginForm">
+			<div class="form-group">
+				<label>用户名</label>
+				<input type="text" name="username" class="form-control" placeholder="请输入用户名">
+			</div>
+			<div class="form-group">
+				<label>密码</label>
+				<input type="password" name="password" class="form-control" placeholder="请输入用密码">
+			</div>
+			<input type="button" class="btn btn-default" value="登录" id="loginBtn">
+			<input type="button" class="btn btn-default" value="检测用户登录状态" id="checkLogin">
+		</form>
+	</div>
+	<script type="text/javascript">
+		// 知识点：cookie 技术
+
+		// 作用：解决 HTTP 协议无状态的问题 和 跨域问题
+		// 原理：客户端第一次访问服务端时，服务端会检测这个客户端是否访问过自己，如果没有访问过，会给这个客户端响应一个 cookie，当客户端再访问服务端的时候，服务端会通过这个 cookie 识别这个客户端，也就建立了持久的沟通
+		// HTTP 协议无状态：当同一个客户端重复向服务端发送请求时，服务端并不知道客户端已经来过一次了，客户端和服务端的沟通没有记忆功能，这就是 HTTP协议无状态
+		// 特性：使用 Ajax 技术发送跨域请求时，默认情况下不会携带 cookie 信息
+		// 使用场景：两个服务端都是自己的，实现跨域登录功能
+
+		// 使用步骤：
+		// （1）客户端配置：withCredentials：在涉及到跨域请求时，是否携带 cookie 信息，默认值为 false（不携带）
+		// （2）服务端配置：Access-Control-Allow-Credentials：true 允许客户端发送请求时携带 cookie
+
+		// 获取登录按钮
+		var loginBtn = document.getElementById('loginBtn');
+		// 获取检测登录状态按钮
+		var checkLogin = document.getElementById('checkLogin');
+		// 获取登录表单
+		var loginForm = document.getElementById('loginForm');
+		// 为登录按钮添加点击事件
+		loginBtn.onclick = function () {
+			var formData = new FormData(loginForm);
+			var xhr = new XMLHttpRequest();
+			xhr.open('post', 'http://localhost:3001/login');
+			// 当发送跨域请求时，携带cookie信息
+			xhr.withCredentials = true;
+			// 发送请求并传递请求参数
+			xhr.send(formData);
+			// 监听服务器端给予的响应内容
+			xhr.onload = function () {
+				console.log(xhr.responseText);
+			}
+		}
+
+		// 当检测用户状态按钮被点击时
+		checkLogin.onclick = function () {
+			var xhr = new XMLHttpRequest();
+			xhr.open('get', 'http://localhost:3001/checkLogin');
+			// 当发送跨域请求时，携带cookie信息
+			xhr.withCredentials = true;
+			// 发送请求并传递请求参数
+			xhr.send();
+			// 监听服务器端给予的响应内容
+			xhr.onload = function () {
+				console.log(xhr.responseText);
+			}
+		}
+	</script>
+</body>
+
+</html>

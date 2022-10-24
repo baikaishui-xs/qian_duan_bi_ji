@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 知识点：属性绑定指令
+    作用：为元素属性 动态绑定 属性值
+    指令：v-bind:    简写：:
+    使用步骤：
+        1、在 元素属性 前面加上 :
+        2、在 元素内容中添加 数据
+    特性：允许使用 JS 代码，变量会去 data 中查找
+  -->
+  <div id="app">
+
+    <img :src="photo" alt="" style="width: 150px;">
+
+    <hr>
+
+    <input type="text" :value="'支持运算：' + index + 3">
+
+  </div>
+
+  <script src="sucai/vue-2.6.12.js"></script>
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        photo: 'https://cn.vuejs.org/images/logo.svg',
+        index: 3,
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        
+    </script>    
+    <script src="http://localhost:3001/better"></script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">点我发送请求</button>
+    <script>
+    // 知识点：函数名优化
+        // 问题：服务端返回的函数调用名称，必须和客户端定义的函数名称保持一致。如果客户端开发人员在写代码的过程中，发现这个函数和其它函数名称冲突了，必须修改，那客户端开发人员就要告诉服务端开发人员最新修改的函数名，让服务端开人员进行修改。这样会导致开发人员沟通成本变高
+        // 解决方法：（1）（2）（3）
+
+        function fn1 (data) {
+            console.log(data);
+        }
+    </script>
+    <script>
+        var btn = document.getElementById('btn');
+		btn.onclick = function () {
+            var script = document.createElement('script');
+            // （1）将函数名以 get 请求方式，发送给服务端
+			script.src = 'http://localhost:3001/test?callback=fn2';
+            document.body.appendChild(script);
+			script.onload = function () {
+				document.body.removeChild(script);
+			}
+        }
+        // （2）（3）在服务器端完成
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+知识点：网络数据请求
+
+文档：https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html
+
+限制：出于安全性考虑，必须满足一下两个条件
+  （1）只能请求 HTTPS 类型的接口
+  （2）只能请求 白名单中的域名
+
+查看白名单
+  微信开发者工具 → 详情 → 项目配置 → 域名信息
+
+跨域
+  跨域只存在于基于浏览器的 Web 开发中。由于小程序的宿主环境不是浏览器，而是微信客户端，所有小程序中不存在跨域的问题
+
+Ajax
+  Ajax 技术的核心是依赖于浏览器中的 XMLHttpRequest 这个对象，由于小程序的宿主环境是微信客户端，所以小程序中不能叫做 “发起 Ajax 请求”，而是叫做 “发起网络数据请求”
+
+报错
+  没有权限请求接口、不在以下 request 合法域名列表中：
+    解决方法：
+      方法一：设置 AppID
+
+      方法二：将接口的域名添加到白名单中
+        使用步骤：登录小程序后台 → 开发 → 开发管理 → 开发设置 → 服务器域名 → 开始配置
+        刷新项目：微信开发者工具 → 详情 → 项目配置 → 刷新域名信息 → 重新编译
+
+      方法三：开启 不校验合法域名（仅在开发中使用）
+        使用步骤：微信开发者工具 → 详情 → 本地设置 → 开启 不校验合法域名
+
+语法：
+  wx.request({            // 发送请求
+    url: '',              // 接口地址
+    data: {},             // 请求参数
+    method: '',           // 请求方式（默认 GET）
+    dataType: '',         // 返回值类型（默认 json）
+    responseType: '',     // 返回数据类型（默认 text）
+    header: {},           // 请求头
+    success: (res) => {}  // 回调函数：成功 时调用；res：响应信息
+    fail: () => {}        // 回调函数：失败 时调用
+    complete: () => {}    // 回调函数：成功或失败 时都会调用
+  })
+
+使用步骤：
+  （1）定义 data 数据
+    swiperList: []
+
+  （2）定义请求方法
+    getSwiperList() {
+      wx.request({
+        url: '',
+        success: (res) => {
+          this.setData({
+            swiperList: res.data.message
+          })
+        }
+      })
+    }
+  
+  （3）调用请求方法
+    onLoad: function () {
+      this.getSwiperList()
+    }

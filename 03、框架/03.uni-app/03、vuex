@@ -1,0 +1,237 @@
+知识点：vuex
+
+详情请看：知识点￥vuex（上）、知识点￥vuex（下）
+
+配置：
+  （1）新建 store 目录，用于存放 vuex 相关模块（-- 根目录/新建 store 目录）
+
+  （2）初始化 store 实例对象。导入以下代码（-- 根目录/store/新建 store.js）
+    // 导入 Vue 和 Vuex
+    import Vue from 'vue'
+    import Vuex from 'vuex'
+
+    // 将 Vue 安装为 Vue 的插件
+    Vue.use(Vuex)
+
+    // 创建 Store 的实例对象
+    const store = new Vuex.Store({
+      // 挂载 state 中的数据
+      modules: {},
+    })
+
+    // 向外共享 store 实例对象
+    export default store
+
+  （3）将 store 实例对象挂载到 Vue 的实例上（-- main.js）
+
+    -- 增
+      ~~ 导入 store 实例对象
+      import store from './store/store.js'
+    --
+
+    const app = new Vuew({
+      ...App,
+
+      -- 增
+        ~~将 store 挂载到 vue 实例上
+        store
+      --
+
+    })
+
+使用步骤：
+  一、创建 vuex 模块：
+    （1）新建 【cart.js 文件】（-- store/新建 【cart.js】）
+
+    （2）初始化 vuex 模块。导入以下代码（-- store/【cart.js】）
+      export default {
+        ~~ 开启命名空间
+        namespaced: true,
+
+        ~~ 提供唯一的公共数据源，所有共享的数据都要统一放到 State 中进行存储
+        state: () => ({
+          // 购物车中每个商品的信息对象。对象包含的属性 { goods_id, goods_name, goods_price, goods_dount（数量）, goods_small_logo（图片）, goods_state（选中状态） }
+          cart: [],
+        }),
+
+        ~~ 方法。修改 store 中的数据
+        mutations: {
+          // 将商品信息对象存储到 cart 中
+          addToCart(state, goods) {
+
+            // 根据 cart 中的 id 和 提交商品的 id 是否相等，来判断这个商品是否已经存在购物车中，不存在则返回 undefined，存在则返回 查找到的商品信息对象
+            // find()：循环数组中的每一项，参数一为每一项
+            const findResult = state.cart.find((item) => item.goods_id === goods.goods_id)
+
+            if (!findResult) {
+              // 购物车中没有这个商品，则直接 push
+              state.cart.push(goods)
+            } else {
+              // 购物车中有这个商品，只更新数量即可
+              findResult.goods_count++
+            }
+          }
+        },
+
+        ~~ 计算属性。用于对 Store 中的数据进行加工处理形成新的数据
+        getters: {}
+      }
+
+    （3）导入 vuex 中的 cart 模块（-- store/store.js）
+      import moduleCart from './cart.js'
+
+    （4）挂载 【cart】 数据（-- 同上）
+      modules: {
+
+        -- 增
+          ~~ 将 moduleCart 数据名改为 m_cart
+          m_cart: moduleCart
+        --
+
+      }
+
+  二、使用 vuex 模块（-- ***.vue）
+    （1）从 vuex 中按需导入 mapState 方法、mapMutations 方法
+      import { mapState, mapMutations } from 'vuex'
+
+    （2）将 vuex 模块中的数据、方法映射到当前组件中（-- 同上）
+      ~~ mapState('模块名称', ['映射数据', '映射数据', ...])：把 vuex 模块中的 数据 映射到 计算属性中
+      ~~ mapState('模块名称', ['映射数据', '映射方法', ...])：把 vuex 模块中的 方法 映射到 方法中
+
+      export default {
+        methods: {
+          ~~ 方法映射到方法中
+          ...mapMutations('m_cart', ['addToCart']),
+        }
+        computed: {
+          ~~ 数据映射到计算属性中
+          ...mapState('m_cart', ['cart']),
+        }
+      }
+
+    （3）定义方法。修改 vuex 模块中的数据（-- 同上）
+      // 右侧两个按钮的点击事件。将商品信息对象存储到全局的 cart 数据中
+      buttonClick(e) {
+        if (e.content.text === '加入购物车') {
+          const goods = {
+            id: this.goodsInfo.id,                   // 商品 id
+            name: this.goodsInfo.name,               // 商品 名称
+            minPrice: this.goodsInfo.minPrice,       // 商品 价格
+            count: 1,                                // 商品 数量
+            pic: this.goodsInfo.pic,          // 商品 图片
+            state: true                              // 商品 勾选状态
+          }
+
+          this.addToCart(goods)
+        }
+      }
+
+    （4）使用数据（-- 同上）
+      <view>{{cart.length}}</view>
+
+动态统计购物车中商品的总数量
+  （1）定义计算属性（-- store/cart.js）
+    getters: {
+      // 统计购物车中商品的总数量
+      total(state) {
+        return state.cart.reduce((total, item) => total += item.count, 0)
+      }
+    }
+
+  （2）从 vuex 中按需导入 mapGetters 方法（-- ***.vue）
+    import { mapGetters } from 'vuex'
+
+  （3）将 vuex 模块中的 计算属性，映射到当前组件的计算属性中（-- 同上）
+    computed: {
+
+      -- 增
+      ...mapGetters('m_cart', ['total']),
+      --
+
+    },
+
+  （4）定义侦听器。监听计算属性 total 值的变化（-- 同上）
+    watch: {
+      // 监听 total 值的变化，通过第一个形参得到变化后的新值
+      total(newVal) {
+        // 通过数组的 find() 方法，找到购物车按钮的配置对象
+        const findResult = this.options.find((x) => x.text === '购物车')
+
+        if (findResult) {
+          // 动态为购物车按钮的 info 属性赋值
+          findResult.info = newVal
+        }
+      },
+    },
+
+数据持久化。持久化存储购物车中的商品
+  （1）将数据存储到本地（-- store/cart.js）
+    mutations: {
+
+      -- 增
+        // 将数据存储到本地
+        saveToStorage(state) {
+          uni.setStorageSync('cart', JSON.stringify(state.cart))
+        }
+      --
+
+    }
+
+  （2）调用 saveToStorage 方法（-- 同上）
+    addToCart(state, goods) {
+      
+      const findResult = state.cart.find((item) => item.id === goods.id)
+
+      if (!findResult) {
+        // 购物车中没有这个商品，则直接 push
+        state.cart.push(goods)
+      } else {
+        // 购物车中有这个商品，只更新数量即可
+        findResult.count++
+      }
+
+      -- 增
+        this.commit('m_cart/saveToStorage')
+      --
+    }
+
+  （3）读取本地数据，对 state 中的数据进行初始化
+    state: () => ({
+      -- 改（旧）
+        cart: [],
+      --
+      -- 改（新）
+        cart: JSON.parse(uni.getStorageSync('cart') || '[]'),
+      --
+    }),
+
+解决页面首次加载侦听器不生效的问题。如这里的商品商品总数量在页面首次加载后还是为默认值
+  说明：使用 普通函数 定义的 watch 侦听器，在页面首次加载后不会被调用
+  
+  解决方法：在页面首次加载时调用监听器，也就是使用 对象的形式 定义 watch 侦听器
+    -- 改（旧）
+      total(newVal) {
+        // 通过数组的 find() 方法，找到购物车按钮的配置对象
+        const findResult = this.options.find((x) => x.text === '购物车')
+
+        if (findResult) {
+          // 动态为购物车按钮的 info 属性赋值
+          findResult.info = newVal
+        }
+      },
+    --
+    -- 改（新）
+      total: {
+        handler(newVal) {
+          // 通过数组的 find() 方法，找到购物车按钮的配置对象
+          const findResult = this.options.find((x) => x.text === '购物车')
+
+          if (findResult) {
+            // 动态为购物车按钮的 info 属性赋值
+            findResult.info = newVal
+          }
+        },
+        // 是否在页面初次加载完毕后立即调用
+        immediate: true
+      }
+    --

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.min.css">
+	<style type="text/css">
+		.container {
+			padding-top: 60px;
+		}
+		.padding {
+			padding: 5px 0 20px 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="form-group">
+			<label>请选择文件</label>
+			<input type="file" id="file">
+			<div class="padding" id="box">
+				<!--<img src="" class="img-rounded img-responsive">-->
+			</div>
+			<!-- 文件上传进度条功能（-1） -->
+			<div class="progress">
+				<div class="progress-bar" style="width: 0%;" id="bar">0%</div>
+			</div>
+		</div>
+	</div>
+    <script type="text/javascript">
+        // 知识点：FormData 对象 实现二进制文件上传
+    
+        // （1）获取 file 控件
+		var file = document.getElementById('file');
+		var bar = document.getElementById('bar');
+        var box = document.getElementById('box');
+        
+        // （2）为 file 控件添加 onchange 事件
+		// onchange 事件：在用户提交文件后触发
+		file.onchange = function () {
+
+			// （3）创建空的formData表单对象
+            var formData = new FormData();
+            
+            // （4）将用户选择的文件追加到formData表单对象中
+            // 特性：这个属性名称由服务端开发人员定义好，然后通过接口文档，提供给前端开发人员
+
+            // this.files[0]
+            // 作用：存储了用户选择的文件
+            // 返回值：数组
+            formData.append('attrName', this.files[0]);
+            
+            var xhr = new XMLHttpRequest();
+            
+            // （5）配置 Ajax 对象
+            // 特性：只有 post 方式才可以实现文件上传
+            xhr.open('post', 'http://localhost:3000/upload');
+			
+			// 文件上传进度条功能（-2）
+			// onprogress 事件：文件上传的过程中持续触发
+			xhr.upload.onprogress = function (ev) {
+				// ev.loaded：文件已经上传了多少
+				// ev.total：上传文件的总大小
+
+				// 获取当前文件的上传进度
+				var result = (ev.loaded / ev.total) * 100 + '%';
+
+				// 设置进度条的宽度
+				bar.style.width = result;
+
+				// 将百分比显示在进度条中
+				bar.innerHTML = result;
+
+            }
+
+            // （6）发送请求
+            xhr.send(formData);
+            
+			xhr.onload = function () {
+				if (xhr.status == 200) {
+				// 文件上传功能（-3）
+					// JSON.parse(json 字符串)：将 json 字符串 转换为 json 对象
+					var result = JSON.parse(xhr.responseText);
+					// 动态创建img标签
+					var img = document.createElement('img');
+					// 给图片标签设置src属性
+					img.src = result.path;
+					// img.onload：当图片加载完成以后触发
+					img.onload = function () {
+						// 将图片显示在页面中
+						box.appendChild(img);
+					}
+				}
+			}
+			
+		}
+	</script>
+</body>
+</html>
+
+<!-- app.js（服务器端） -->
+<script>
+    const express = require('express');
+    const path = require('path');
+    const formidable = require('formidable');
+    const app = express();
+
+    // 实现文件上传的路由
+    app.post('/upload', (req, res) => {
+        // （1）创建 formidable 表单解析对象
+        const form = new formidable.IncomingForm();
+
+        // （2）设置客户端上传文件的存储路径
+        // uploads 目录：用于存储用户上传的文件
+        form.uploadDir = path.join(__dirname, 'public', 'uploads');
+
+        // （3）保留上传文件的后缀名字
+        form.keepExtensions = true;
+
+        // （4）解析客户端传递过来的FormData对象
+        form.parse(req, (err, fields, files) => {
+
+			// 文件上传图片即时预览功能
+			// 将客户端传递过来的文件地址响应到客户端
+			// iles.attrName.path：文件存储地址  如：C:\Ajax\day02\code\server\public\uploads\upload_5c63e05f0fed4bed53.jpg
+            res.send({
+				// split('分割符')：分割字符串
+					// 返回值：数组
+				// files.attrName.path.split('public')[0]	// C:\Ajax\day02\code\server\public
+				// 将图片地址存储到 path 属性中
+                path: files.attrName.path.split('public')[1]  // \uploads\upload_5c63e05f0fed4bed53.jpg
+            });
+        });
+    });
+
+    app.listen(3000);
+    console.log('服务器启动成功');
+</script>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+
+<body>
+	<button id="btn">发送请求</button>
+	<div id="container"></div>
+	<script type="text/javascript">
+		// 知识点：XML 基础
+
+		// 特性：使用 XML文档 响应数据现在已经很少使用了
+
+		// XML：可扩展标记语言
+		// 作用：传输 和 存储 数据
+		// XML DOM：XML 文档对象模型。由一套操作 XML 文档对象API组成
+		// 使用场景：客户端需要将服务端响应的 XML 文档中的数据显示在页面中 
+
+		var btn = document.getElementById('btn');
+		var container = document.getElementById('container');
+
+		btn.onclick = function () {
+			var xhr = new XMLHttpRequest();
+			xhr.open('get', '/xml');
+			xhr.send();
+			xhr.onload = function () {
+				// 获取服务器端响应的 xml 文档
+				var xmlDocument = xhr.responseXML;
+				// 将 xml 文档中的数据渲染到页面中
+				var title = xmlDocument.getElementsByTagName('title')[0].innerHTML;
+				container.innerHTML = title;
+			}
+		}
+	</script>
+</body>
+
+</html>

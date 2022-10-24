@@ -1,0 +1,131 @@
+知识点：事件绑定
+
+传参
+  特性：无法通过方法中的实参来传参
+
+  解决方法：
+    （1）传递参数。通过自定义属性
+      语法：data-参数名="{{参数}}"
+
+      例：
+        <button bindtap="handletap" data-operation="{{1}}">+</button>
+
+    （2）接收参数。获取自定义属性
+      语法：e.currentTarget.dataset.参数名
+
+      例：
+        handleInput(e) { // e：当前事件绑定的元素对象
+          const operation = e.currentTarget.dataset.operation;
+        }
+
+在方法中 获取 data 值
+  this.data.变量名
+
+在方法中 修改 data 值
+  特性：无法直接通过 this 来修改 data 值
+
+  解决方法：
+    （1）通过 this.setData 方法
+      语法：this.setData({ 数据名: 值 })
+
+      例：
+        this.setData({
+          num: this.data.num + 1
+        })
+
+事件对象
+  说明：事件函数触发时会返回一个事件对象
+
+  属性：
+    type：事件类型
+
+    timeStamp：页面打开到触发事件所经过的毫秒数
+
+    target、currentTarget
+      作用：
+        target：触发该事件的源头组件（常用）
+        currentTarget：当前事件所绑定的组件
+
+      例：
+        点击内部的按钮时，点击事件以冒泡的方式向外扩散，也会触发外层 view 的 tap 事件处理函数。此时，对于外层的 view 来说：
+          - target：内部按钮组件
+          - currentTarget：当前 view 组件
+
+        outerHandler(e) {
+          console.log(e.target)
+          console.log(e.currentTarget)
+        }
+
+        <view bindtap="outerHandler">
+          <button type="primary">按钮</button>
+        </view>
+
+    detail：额外的信息（常用）
+      - value
+        作用：获取文本框最新的值
+
+        例：
+          <input bindinput="inputHandler"></input>
+
+          inputHandler(e) {
+            console.log(e.detail.value)
+          }
+
+
+    touches：触摸事件，当前停留在屏幕中的触摸点信息的数组
+
+    changedTouches：触摸事件，当前变化的触摸点信息的数组
+
+bindinput 事件 / bind:input 事件
+  作用：双向数据绑定
+
+  触发：input 的值发送变化时触发
+
+  使用步骤：
+    （1）绑定 bindinput 事件
+      <input type="text" bindinput="handleInput />
+
+    （2）定义方法
+      handleInput(e) {
+        this.setData({
+          msg: e.detail.value
+        })
+      }
+
+bindtap 事件 / bind:tap 事件
+  触发：点击时触发
+  特性：取代 click 事件
+
+  使用步骤：
+    （1）绑定 bindtap 事件
+      <button bindtap="add">点我触发</button>
+
+    （2）定义方法
+      add() {
+        console.log('触发！！！')
+      }
+
+bindchange 事件 / bind:change 事件
+  触发：单选框、复选框 状态被改变时触发
+
+  使用场景：单选框、复选框
+
+  使用步骤：
+    （1）导入结构
+      <radio-group bindchange="handleChange">
+        <radio value="male">男</radio>
+        <radio value="female">女</radio>
+      </radio-group>
+
+    （2）定义 数据、方法
+      Page({
+        data: {
+          gender: ""
+        },
+        handleChange(e) {
+          let gender = e.detail.value;
+          this.setData({
+            gender
+          })
+        }
+      })

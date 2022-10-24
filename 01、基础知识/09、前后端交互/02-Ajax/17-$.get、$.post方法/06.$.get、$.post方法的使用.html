@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>$.ajax方法基本使用</title>
+</head>
+<body>
+	<button id="btn">发送请求</button>
+	<script src="/js/jquery.min.js"></script>
+	<script>
+		// 知识点：$.get、$.post方法的使用
+
+		// $.get ('请求地址', 【请求参数】, 回调函数(服务端响应的数据))
+		// $.post('请求地址', 【请求参数】, 回调函数(服务端响应的数据))
+
+		$('#btn').on('click', function () {
+			// $.get('/base', 'name=zhangsan&age=30', function (response) {
+			// 	console.log(response)
+			// })
+			
+			$.post('/base', {name: 'zhangsan', age: 30}, function (response) {
+				console.log(response)
+			})
+		});
+	</script>
+</body>
+</html>

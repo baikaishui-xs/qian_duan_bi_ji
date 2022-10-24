@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 知识点：事件绑定 指令
+        作用：为 DOM 元素绑定事件监听
+        指令：v-on:事件类型='事件处理函数名'    简写：@事件类型='事件处理函数名'
+        
+        使用步骤：
+            （1）绑定 @ 指令
+            （2）在 methods 中定义事件处理函数
+    -->
+  <div id="app">
+    <p>count 的值是：{{ count }}</p>
+    <button v-on:click="add(1)">+1</button>
+    <button @click="sub(1, $event)">-1</button>
+
+    <!-- 事件 修饰符
+
+        语法：@click.事件修饰符
+
+        （1）prevent
+        作用：阻止默认行为
+
+        （2）stop
+        作用：阻止冒泡
+
+        （3）capture
+        作用：以捕获模式触发
+
+        （4）once
+        作用：只触发一次
+
+        （5）self
+        作用：只能通过自身元素触发（只有在 event.target 是当前元素自身时触发事件处理函数）
+
+        （6）left
+        作用：只有点击鼠标 左 键时触发
+
+        （7）right
+        作用：只有点击鼠标 右 键时触发
+
+        （8）middle
+        作用：只有点击鼠标 中 键时触发
+    -->
+    <a @click.prevent="sub(1, $event)" href="http://baidu.com">百度</a>
+
+    <!-- 按键 修饰符
+
+        语法：@keyup.按键修饰符
+
+        作用：监听按键
+
+    -->
+    <input type="text" @keyup.esc="clearInput" value="123456">
+
+  </div>
+
+  <script src="sucai/vue-2.6.12.js"></script>
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        count: 0
+      },
+      // methods：定义事件处理函数
+      methods: {
+
+        add: function (n) {
+
+          // 在事件处理函数中操作 data 中的变量
+
+          // 方法一：在 vm 对象中操作
+          // vm.count += n
+
+          // 方法二（推荐）：在 this 中操作
+          this.count += n;
+
+        },
+
+        // 简写：: 和 function 可以省略
+        // 事件对象：
+        // 方法一：e
+        // 特性：不传参时，参数默认是 事件对象
+        // 使用场景：不传参时
+
+        // 方法二：$event
+        // 作用：vue 提供的内置对象，是原生的 事件对象
+        // 使用场景：传参时使用
+        // 使用步骤：
+        // 1、在指令的函数实参最后面添加 $event
+        // 2、在函数调用中使用 e
+        sub(n, e) {
+          this.count -= n;
+
+          // e.target.style.backgroundColor = 'red';
+          e.target.style.backgroundColor = 'red'
+        },
+
+        clearInput(e) {
+          e.target.value = '';
+        }
+
+      }
+    })
+  </script>
+</body>
+
+</html>

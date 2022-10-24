@@ -1,0 +1,5 @@
+知识点：sitemap 配置项
+
+  文档：https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/sitemap.html
+  作用：配置⼩程序及其⻚⾯是否允许被微信索引
+  特性：当开发者允许微信索引时，微信会通过爬虫的形式，为小程序的页面内容建立索引。当用户的搜索词条触发该索引时，小程序的页面将可能展示在搜索结果中。 爬虫访问小程序内页面时，会携带特定的 user-agent：mpcrawler 及场景值：1129。需要注意的是，若小程序爬虫发现的页面数据和真实用户的呈现不一致，那么该页面将不会进入索引中

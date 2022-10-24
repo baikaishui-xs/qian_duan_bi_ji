@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 知识点：条件渲染 指令
+    作用：
+      1、控制 DOM 元素的显示和隐藏
+        特性：搭配 flag 使用。true 为 显示； false 为隐藏
+      2、条件判断
+  -->
+  <div id="app">
+    <!-- 1、控制 DOM 元素的显示和隐藏 -->
+    <!-- （1）v-if
+        作用：删除元素
+        原理：动态 创建 和 销毁 元素，比较消耗性能
+        使用场景：只需要切换一次显示和隐藏，且初始值为 false 时，性能更好
+    -->
+    <p v-if="flag">这是被 v-if 控制的元素</p>
+
+    <!-- （2）v-show
+        作用：隐藏元素
+        原理：使用 display 来控制
+        使用场景：频繁切换显示和隐藏时，性能更好
+    -->
+    <p v-show="flag">这是被 v-show 控制的元素</p>
+
+    <hr>
+
+    <!-- 2、条件判断 -->
+    <div v-if="type === 'A'">优秀</div>
+    <div v-else-if="type === 'B'">良好</div>
+    <div v-else-if="type === 'C'">一般</div>
+    <div v-else>差</div>
+  </div>
+
+  <script src="sucai/vue-2.6.12.js"></script>
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        // flag：控制 DOM元素 的 显示 和 隐藏
+        flag: false,
+        type: 'A'
+      }
+    })
+  </script>
+</body>
+
+</html>

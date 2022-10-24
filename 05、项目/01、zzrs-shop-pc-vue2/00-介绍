@@ -1,0 +1,79 @@
+项目体验：http://mi.futurefe.com/#/index
+
+页面：
+  （1）登录页
+  （2）商城首页
+  （3）商城产品站
+  （4）商城详情
+  （5）购物车
+  （6）订单确认
+  （7）订单支付（微信/支付宝）
+  （8）订单列表
+
+技术栈：
+  Vue
+  VueRouter
+  Vuex
+  Vue-Transition
+  Axios
+  ElementUI
+
+组件：
+  1、NavHeader（导航组件）
+  2、NavFooter（底部组件）
+  3、ServiceBar（服务条组件）
+  4、ProductParam（产品参数组件）
+  5、OrderHeader（订单头部组件）
+  6、Loading（加载组件）
+  7、Modal（弹框组件）
+  8、NoData（无数据组件）
+  9、ScanPayCode（支付组件）
+
+技术栈：
+  基础知识
+    - Git 命令详细讲解
+    - Node 环境/升降级
+    - VueCli4.0 讲解
+    - DevTools 安装讲解
+
+  动画：
+    - Vue-Transition
+    - C3-Transition
+    - C3-Animation
+
+  UI：
+    - 设计师精心制作
+    - 蓝湖在线/免费使用
+  
+  框架：
+    - Vue2.6
+    - VueRouter3.1
+    - Vuex3.1
+    - Axios
+    - ElementUI2.9
+    - Scss/Mixin
+
+  项目架构：
+    - 三种跨域方案
+    - 目录结构规范
+    - 常用插件介绍
+    - Router 封装
+    - Storage 封装
+    - 接口错误拦截
+    - 接口环境设置
+    - Mock 设置
+
+  其它知识：
+    - 开发调试技巧
+    - 本地接口代理
+    - 生成支付二维码
+    - 图片懒加载者
+    - SHH 公钥配置
+    - Nginx 配置
+    - 项目部署
+
+## 功能实现
+
+### 一、轮播图功能
+
+使用 swiper 提供的轮播图组件

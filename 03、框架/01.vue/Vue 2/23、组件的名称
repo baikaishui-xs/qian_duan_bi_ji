@@ -1,0 +1,15 @@
+知识点：组件的名称
+
+特性：
+    1、在声明组件的时候，组件没有 name 节点，则组件的名称默认使用 注册 的名称，推荐为每个组件取一个名称
+    2、组件名首字母要大写
+
+-- App 组件
+    components: {
+        Right
+    }
+
+-- Right 组件
+    export default {
+        name: 'MyRight'
+    }

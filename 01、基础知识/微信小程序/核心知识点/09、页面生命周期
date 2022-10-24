@@ -1,0 +1,84 @@
+知识点：页面生命周期
+
+文档：https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html
+文档：https://uniapp.dcloud.io/collocation/frame/lifecycle?id=%e9%a1%b5%e9%9d%a2%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f
+
+概念：页面从 启动 → 运行 → 销毁 的过程
+
+  // （1）onLoad
+  // 触发条件：页面加载后
+  // 作用：获取数据
+  onLoad: function (options) {
+    console.log("onLoad");
+  },
+  
+  // （2）onShow
+  // 触发条件：页面显示后
+  onShow: function () {
+    console.log("onShow");
+  },
+  
+  // （3）onReady
+  // 触发条件：页面初次渲染完成后
+  // 作用：修改页面数据
+  onReady: function () {
+    console.log("onReady");
+  },
+  
+  // （4）onHide
+  // 触发条件：页面隐藏后
+  onHide: function () {
+    console.log("onHide");
+  },
+
+  // （5）onUnload
+  // 触发条件：页面关闭后
+  onUnload: function () {
+    console.log("onUnload");
+  },
+
+  -- 以下了解即可 --
+
+  // （6）onPullDownRefresh
+  // 触发条件：用户下拉后（刷新）
+  // 使用场景：重新获取数据和页面效果
+  onPullDownRefresh: function () {
+    console.log("onPullDownRefresh");
+  },
+
+  // （7）onReachBottom
+  // 触发条件：页面上拉到底部后
+  // 特性：页面需要有足够高度才能触发该效果（有滚动条）
+  onReachBottom: function () {
+    console.log("onReachBottom");
+    // 上拉加载下一页数据 
+  },
+
+  // （8）onShareAppMessage
+  // 触发条件：用户点击右上角分享后
+  onShareAppMessage: function () {
+    console.log("onShareAppMessage");
+  },
+
+  // （9）onPageScroll
+  // 触发条件：页面滚动后 
+  onPageScroll(){
+    console.log("onPageScroll");
+  },
+
+  // （10）onResize
+  // 触发条件：页面的尺寸发生改变后（横屏、竖屏）
+  // 调试：在微信小程序开发工具中开启横竖屏切换图标
+    -- 页面配置文件
+    "pageOrientotion": "auto"
+
+  onResize(){
+    console.log("onResize");
+  },
+  
+  // （11）onTabItemTap
+  // 触发条件：当前页面为 tab 页面，点击 tab 页面后
+   */
+  onTabItemTap(){
+    console.log("onTabItemTap");
+  }

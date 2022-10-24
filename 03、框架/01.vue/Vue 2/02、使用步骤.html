@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width initial-scale=1 maximum-scale=1 minimum-scale=1 user-scalable=no">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 知识点：使用步骤：（1）（2）（3） -->
+
+  <!-- （2）定义被 vue 所控制的区域 -->
+  <div id="app">{{ username }}</div>
+
+  <!-- （1）导入 Vue 的库文件（在 window 全局就有了 Vue 这个构造函数） -->
+  <script src="sucai/vue-2.6.12.js"></script>
+
+  <script>
+
+    // （3）创建 Vue 的实例对象
+    const vm = new Vue({
+
+      // el（视图）：要控制页面上的哪个区域，接收的值是一个选择器
+      el: '#app',
+
+      // data（数据源）：渲染到控制区域的数据
+      data: {
+        username: 'zhangsan'
+      }
+
+    })
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+创建项目
+  微信开发者工具 → 创建小程序 → 填写 AppID → 勾选 不使用云服务
+
+推送至远程仓库
+
+整理项目目录结构
+  特性：在小程序项目中，无需要引入文件 .js、.json、.wxml、.wxss，小程序会自动引入同名的文件
+  提示：MINA 指的是原生框架，也就下面的目录结构 
+
+  删除 pages/logs 目录
+  清空 utils 目录中的文件
+  清空 app.wxss
+  清空 aap.js，并重新生成 app.js 骨架（输入 zcr，选择 app.js 骨架代码片段）
+  删除 pages/index 目录，并重新生成 index 页面（使用 WXML - Language Service 插件生成页面）
+
+  components               // 存放 组件     【手动创建】
+  pages                    // 存放 页面（特性：每个页面必须以文件夹的形式存在）
+    index                  // 首页
+      index.js             // 页面 脚本
+      index.json           // 页面 配置
+      index.wxml           // 页面 模板结构
+      index.wxss           // 页面 样式
+    logs                   // 日志页面
+  request                // 存放 接口     【手动创建】
+  styles                 // 存放 公共样式     【手动创建】
+  utils                  // 存放 工具性质的模块（如：自定义方法、第三方工具）
+  app.js                 // 项目全局入口 文件
+  app.json               // 全局配置 文件
+  app.wxss               // 全局样式 文件
+  project.config.json    // 项目配置 文件
+  sitemap.json           // 微信索引配置 文件
+
+  为空目录添加 .gitkeep
+
+将以下文件放到 Prettier 忽略清单中（-- .prettierignore）
+  app.json
+
+将以下文件放到 git 忽略清单中（-- .gitignore）
+  /node_modules
+
+开启服务端口：微信开发者工具 → 设置 → 安全设置 → 开启 服务端口
+
+初始化样式（-- app.wxss）
+  page,view,text,swiper,swiper-item,image,navigator {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 30rpx;
+  }
+
+定义主题样式（-- app.wxss）
+  page {
+    /* 主题颜色 */
+    --themeColor: #eb4450;
+  }
+
+导入资源
+  导入 字体图标
+    （1）创建字体图标
+      阿里巴巴矢量图 → 选择好图标并放到项目中 → 选择 Font class → 生成代码 →打开生成的在线代码 → styles/新建 iconfont.wxss → 将生成的在线代码内容复制到 iconfont.wxss 中
+
+    （2）全局引入（-- app.wxss）
+      @import "./styles/iconfont.wxss"
+
+  导入 icon图标
+    （1）导入文件
+      根目录/导入 icon
+
+解决警告：
+  （1）[sitemap 索引情况提示] 根据 sitemap 的规则[0]，当前页面 [pages/child/index] 将不被索引
+    解决方法：在 setting 字段中添加以下代码（-- project.config.json）
+      "checkSiteMap": false,

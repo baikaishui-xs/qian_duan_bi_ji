@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+      // 知识点：请求限制
+      // 概念：Ajax 只能向自己的服务器发送请求，不能向其它的服务器发送请求。如：无法请求国家气象台的天气信息，因为同源政策，这是浏览器给予 Ajax 的限制
+
+      // 同源：多个页面拥有相同的 协议、域名、端口 那么这两个页面就属于同一个源，其中只要有一个不相同，就是不同源
+
+    /* 自己的网站 */
+      // http://www.example.com/dir/page.html
+
+    /* 第三方网站 */
+      // http://www.example.com/dir2/other.html：同源
+      // http://example.com/dir/other.html：不同源（域名不同）
+      // http://v2.www.example.com/dir/other.html：不同源（域名不同）
+      // http://www.example.com:81/dir/other.html：不同源（端口不同）
+      // https://www.example.com/dir/page.html：不同源（协议不同）
+
+      // 同源政策
+      // 作用：为了保证用户信息的安全，防止恶意的网站窃取数据。最初的同源政策是指 A 网站在客户端设置的 Cookie，B 网站是不能访问的
+      // 如：A 网站是一家银行，用户在登录以后，A 网站在用户的机器中设置了 Cookie，Cookie 中包含了一些隐私信息，如 存款的总额，当用户离开 A 网站以后，又去访问了 B 网站，如果没有同源政策的限制，且 用户没有退出登录，B 网站就可以读取 A 网站设置的 Cookie，而 Cookie 往往用于保存用户的登录状态和信息，这是非常不安全的
+
+      // 规定：Ajax 无法向非同源地址发送请求，如果请求，浏览器就会报错。这种报错叫做跨域
+
+      // 特性：只限制 js 脚本，对于一般的 img、或者 script 脚本，请求都不会有跨域的限制，这是因为这些操作都不会通过响应结果来进行可能出现安全问题的操作
+
+      // 解决同源请求限制的方法：
+      // JSONP 解决方法：
+      // 原理：绕过浏览器端同源政策的限制，向非同源服务器端发送请求
+      // 特性：
+      // 1、需前后端开发人员配合完成
+      // 2、和 Ajax 一样可以实现无刷新向服务器端请求数据，但这并不属于 Ajax 技术
+      // 使用步骤：（1）（2）（3）
+  </script>
+
+  <script>
+    // 功能：在页面加载时 向非同源服务器发送请求
+
+    // （2）在全局作用域中定义一个函数，用于接收非同源服务器的响应数据
+    function fn(data) {
+      // console.log('客户端的 fn 函数背调用了');  // 测试
+      console.log(data) // {name: 张三}
+    }
+  </script>
+  <!-- （1）向非同源服务器端发送请求 -->
+  <!-- 特性：
+        1、script 中的 src 拥有发送请求的能力，并且不受同源政策的限制
+            如： <script src=“https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+        2、将返回的字符串，当作 js 代码执行
+    -->
+  <script src="http://localhost:3001/test"></script>
+
+  <!-- （3）详见 s2 里的 app.js 中的 /test 路由中 -->
+</body>
+
+</html>

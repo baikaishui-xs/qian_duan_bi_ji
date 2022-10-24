@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button id="btn">发送Ajax请求</button>
+	<script type="text/javascript">
+		var btn = document.getElementById('btn');
+
+		btn.onclick = function () {
+		// 知识点：Ajax 四种错误处理情况
+
+            var xhr = new XMLHttpRequest();
+            
+			// （2）网络畅通，服务器端没有接收到请求，返回404状态码。
+			// 解决方法：检查请求地址是否错误。
+			// xhr.open('get', 'http://localhost:3000/error12312312');
+			xhr.open('get', 'http://localhost:3000/error');
+			xhr.send();
+			xhr.onload = function (){
+				console.log(xhr.responseText);
+
+				// 判断 http 状态，对不同的错误，做不同的处理
+				// （1）网络畅通，服务器端能接收到请求，服务器端返回的结果不是预期结果。（服务器端返回非 200 状态码）
+				// 解决方法：可以判断服务器端返回的状态码，分别进行处理。
+				// xhr.status：获取http状态码
+				if (xhr.status == 400) {
+					alert('请求出错')
+				}
+            }
+            
+            // （3）网络畅通，服务器端能接收到请求，服务器端返回500状态码。
+            // 特性：服务器端代码在执行的过程中出错，会自动给客户端发挥一个 500 状态码     如：服务器端语法错误，输出了一个不存在的变量 console.log(abc)
+            // 解决方法：告诉服务器端开发员，某个请求地址返回的状态码是 500，服务器端开发人员就会去调试他的程序了
+
+            // （4）网络中断，请求无法发送到服务器端
+            // 特性：网络中断时不会触发 onload 事件，而是触发 onerror 事件
+            // onerror 事件：网络中断时触发
+            // 解决：提示网络中断
+			xhr.onerror = function () {
+				alert('网络中断, 无法发送Ajax请求')
+			}
+		}
+
+		// Ajax状态码 和 Http状态码 的区别：
+			// Ajax状态码: 表示Ajax请求的过程状态 ajax对象返回的
+			// Http状态码: 表示请求的处理结果 是服务器端返回的
+	</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button id="btn">点我发送请求</button>
+	<script src="/js/ajax.js"></script>
+	<script>
+		// 知识点：利用自己的服务端去访问非同源的服务端 方法
+
+		// 原理：
+			// 1、绕过浏览器端同源政策的限制，向非同源服务器端发送请求
+			// 2、同源政策在服务端是不存在的，服务端开发语言可以直接访问非同源网站的数据。这样我们就可以利用自己的服务端去访问非同源的服务端，并将数据响应到客户端
+		
+		// 特性：只需要在 客户端 进行配置，无需配置 服务端
+
+		// 使用步骤：（1）（2）
+
+		var btn = document.getElementById('btn');
+		btn.onclick = function () {
+			// （1）向服务端发送请求（2）在服务端完成
+			ajax({
+				type: 'get',
+				url: 'http://localhost:3000/server',
+				success: function (data) {
+					console.log(data);
+				}
+			})
+		};
+	</script>
+</body>
+</html>

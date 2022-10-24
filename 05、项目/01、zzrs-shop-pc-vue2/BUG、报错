@@ -1,0 +1,58 @@
+报错
+
+  ILLEGAL_ARGUMENT
+    翻译：非法参数、非法辩论
+    解决方法：请传递完整的参数
+
+  请求地址错误
+    接口代理中的请求根路劲错误，修改时，一定要重启项目才能生效
+
+  404
+    请求地址错误
+    解决方法：检查请求地址是否正确
+
+  Uncaught (in promise) Error: Request failed with status code 400
+    翻译：未捕获（承诺中）错误：请求失败，状态代码为400
+    解决方法：请求参数必须和文档中的参数名保持一致
+
+  Proxy error: Could not proxy request /products?categoryId=100012 from localhost:8080 to https://mall-pre.springboot.cn (ECONNREFUSED).
+    翻译：代理错误：无法将请求/产品？categoryId=100012从本地主机：8081代理到https://mall-pre.springboot.cn （经济融合）
+    解决方法：检查 vue.config.js 中的代理目标地址是否书写正确
+
+  vue-router.esm.js?8c4f:10 Uncaught Error: [vue-router] "path" is required in a route configuration.
+    说明：在路由配置中是必需的
+    解决方法：语法写错了，请填写正确的语法
+
+  Couldn't parse bundle asset "/Users/zhengcunrui/Desktop/xiaomi/dist/js/chunk-vendors.js".
+  Analyzer will use module sizes from stats file'.
+    翻译：无法分析捆绑资产“/Users/zhengcunrui/Desktop/xiaomi/dist/js/chunk vendors.js”。Analyzer将使用统计文件中的模块大小。
+    解决方法一：不要在 App.vue 中使用 @import，应该放在 main.js 中
+    解决方法二：添加一个 style，不要指定 lang
+      <style>
+      /* 初始化样式 */
+      @import './assets/styles/base.css';
+      /* 公共样式 */
+      @import './assets/styles/common.css';
+      /* 矢量图标 */
+      @import '//at.alicdn.com/t/font_2823769_v9tvvte0pj.css';
+      </style>
+
+  定义路由规则后，哈希值是正确的，但是没有显示对应的路由
+    解决方法：在 App.vue 中 添加 <router-view>
+
+  scss 不能使用 @import
+    解决方法：在定义一个 style，把 @import 放在里面
+
+结构 BUG
+  问题：NavHeader 组件中的下拉列表，上边框没有隐藏，在碰到 menu 底部时，会显示下拉列表
+  解决方法：在 hover 中也配置 边框
+
+vuex
+  问题：Computed property "sum" was assigned to but it has no setter
+  翻译：计算属性“***”已分配给，但它没有设置器
+  解决方法：不要直接操作 vuex 中 state 的数据，应该把它转存一下，或使用 Actions 方法调用
+
+其它 BUG
+  问题：使用子组件模态框的时候发现遮罩层和文字的颜色和设定好的不一样
+  问题：transition 组件过渡动画不流畅
+  解决方法：使用子组件时不要放在父组件的深层，放在template元素的孙子元素中里即可，因为放在深层容易被其它父组件的样式影响

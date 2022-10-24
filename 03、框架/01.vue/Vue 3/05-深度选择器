@@ -1,0 +1,11 @@
+vue2.x 方法：/deep/
+
+  /deep/ .title {
+    color: blue;
+  }
+
+vue3.x 方法：:deep()
+
+  :deep(.title) {
+    color: blue;
+  }

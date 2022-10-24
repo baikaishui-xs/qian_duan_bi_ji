@@ -1,0 +1,32 @@
+项目（电商平台数据可视化实时监控系统）
+
+特性：支持联动效果，一端操作，多端联动展示
+
+技术选型：
+  前端：
+    1、ECharts
+    2、Vue, vueRouter, VueX
+    3、Webpack
+    4、Axios
+    5、WebSocket
+
+  后端：
+    Koa2（web 服务器框架）
+
+运行项目
+
+  vision-project（项目名称）（该项目请在课件中查找）
+
+    - koa2-server（后端工程）
+    启动后端工程：
+      1、cd 后端工程目录
+      2、npm install
+      3、node app.js
+
+    - vision（前端工程）
+    启动前端工程：
+      1、cd 前端工程目录
+      2、npm install
+      3、npm run serve
+
+在浏览器输入命令行提示的项目运行地址，进行预览

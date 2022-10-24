@@ -1,0 +1,90 @@
+知识点：直角坐标系中的通用配置项
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="lib/echarts.min.js"></script>
+</head>
+
+<body>
+  <div style="width: 600px;height:400px"></div>
+  <script>
+    var mCharts = echarts.init(document.querySelector("div"))
+    var xDataArr = ['张三', '李四', '王五', '闰土', '小明', '茅台', '二妞', '大强']
+    var yDataArr = [88, 92, 63, 77, 94, 80, 72, 86]
+    var option = {
+      dataZoom: [  // 区域缩放（筛选类目）
+        {
+          type: slider,  // 类型：slider（滑块）inside（内置，依靠鼠标滚轮或者双指缩放）
+          xAxisIndex: 0  // 显示 x 轴上的区域缩放
+        },
+        {
+          type: slider,
+          yAxisIndex: 0  // 显示 y 轴上的区域缩放
+          start: 0,  // 区域缩放默认 起始值
+          end: 80,  // 区域缩放默认 结束值
+        }
+      ]
+      toolbox: {
+        feature: {
+          dataZoom: {}  // 显示区域缩放工具（筛选类目）
+        }
+      }
+      grid: { // 坐标轴容器
+        show: true, // 显示边框
+        borderWidth: 10, // 边框宽度
+        borderColor: 'red', // 边框颜色
+        left: 120, // 图表距离左边的距离
+        top: 120, // 图表距离上边的距离
+        width: 300, // 图表宽度
+        height: 150 // 图表高度
+      },
+      xAxis: {
+        type: 'category',  // 类目轴（特性：该类型必须通过 data 设置类目数据）
+        data: xDataArr,
+        position: 'top'  // x 轴的显示位置（默认在下边）
+      },
+      yAxis: {
+        type: 'value',  // 数值轴（特性：自动从系列中读取数据）
+        position: 'right'  // y 轴的显示位置（默认在左边）
+      },
+      series: [
+        {
+          name: '语文',
+          type: 'bar',
+          markPoint: {
+            data: [
+              {
+                type: 'max', name: '最大值'
+              },{
+                type: 'min', name: '最小值'
+              }
+            ]
+          },
+          markLine: {
+            data: [
+              {
+                type: 'average', name: '平均值'
+              }
+            ]
+          },
+          label: {
+            show: true,
+            rotate: 60,
+            position: 'top'
+          },
+          barWidth: '30%',
+          data: yDataArr
+        }
+      ]
+    }
+    mCharts.setOption(option)
+  </script>
+</body>
+
+</html>

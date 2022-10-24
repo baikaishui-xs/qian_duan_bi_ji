@@ -1,0 +1,17 @@
+相比 vue2.x 新增功能：
+  1、性能提升
+  2、类型检测。vue2 使用的是 flow 来进行类型检测 / vue3 使用的是 TypeScript
+  3、数据劫持。vue2 使用的是 Object.defineProperty 来劫持数据的 getter 和 setter 方法，但这种方式有一个缺陷，就是当给对象添加或删除属性时，是无法劫持和监听的 / Vue3 使用 Proxy
+  4、API。vue2 使用的是 Options API / vue3 使用的是 Composition API
+  5、复用。vue2 使用的 mixins，但这种方式有一个缺陷，它是由 Options 组成的，并且多个 mixins 会存在命名冲突的问题 / vue3 使用的是 Hooks 函数，它可以做到响应式的
+  
+废弃功能：
+  1、过滤器
+  2、$on、$off、$once 实例方法
+  3、等
+
+安装 Vue3.x 调试工具：
+    下载：https://chrome.google.com/webstore/detail/vuejs-devtools/ljjemllljcmogpfapbkkighbhhppjdbg
+    在插件详细信息中打开：1、在无痕模式下启用    2、允许访问文件网址
+
+    科普：Root：根节点（el 控制的区域） 

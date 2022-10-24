@@ -1,0 +1,33 @@
+知识点：码云
+
+简介：可以理解为国内版的 GitHub
+
+将本地仓库推送到远程仓库中：
+
+  （1）配置 SSH 公钥
+    文档：https://gitee.com/help/articles/4181
+    1、生成公钥：ssh-keygen -t ed25519 -C "邮箱"
+      - 命令行会提示一些信息：全部按回车即可
+      - 命令行提示：Your public key has been saved in 公钥要存放的位置（mac 存放目录：/Users/zhengcunrui/.ssh）（pub后缀的就是公钥）
+    2、复制公钥中的内容到码云的 SSH 公钥中
+    3、添加到可信列表中：ssh -T git@gitee.com
+      - 输入 yes
+      - 显示 Hi XXX!... 代表添加成功
+
+  （2）新建项目
+    - 填写项目名称
+    - 将 使用 Readme 文件初始化这个仓库 关闭
+    - 创建项目
+
+  （3）Git 全局配置
+    - 终端输入文档中的 两条命令
+
+  （4）提交本地仓库到远程仓库中
+    - 在项目目录中打开终端
+    - 执行 git add .
+    - 执行 git commit -m "add files"
+    - 选择 SSH 项，执行 文档已有仓库的第二条命令  如：git remote add origin https://gitee.com/vsdeveloper/vue_shop.git
+    - 将本地仓库和远程仓库进行关联：选择 SSH 项，执行 文档已有仓库的第三条命令  如：git push -u origin master
+    - 第一次关联时会提示输入码云的账号密码，以后关联时不会提示
+
+  

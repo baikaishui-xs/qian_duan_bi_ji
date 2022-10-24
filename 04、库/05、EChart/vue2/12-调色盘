@@ -1,0 +1,36 @@
+知识点：调色盘
+
+概念：一组颜色，图像、系列会自动从其中选择颜色
+
+主题调色盘
+  -- 主题.js
+    echarts.registerTheme('itcast', {
+      "color": [  // 主题调色盘
+        "#893448",
+        "#d95850",
+        "#eb8146",
+        "#ffb248",
+        "#f2d643",
+        "#ebdba4"
+      ]
+    }
+
+全局调色盘
+  特性：
+    1、会覆盖主题调色盘
+    2、允许使用单词、16进制
+  -- 图标.html
+    var option = {
+      color: ['red', 'green', 'blue', 'skyblue', 'purple']  // 全局调色盘
+    }
+
+局部调色盘
+  特性：会覆盖全局调色盘
+  -- 图标.html
+    var option = {
+      series: [
+        {
+          color: ['pink', 'yellow', 'black', 'orange', 'red']  // 局部调色盘
+        }
+      ]  // 全局调色盘
+    }

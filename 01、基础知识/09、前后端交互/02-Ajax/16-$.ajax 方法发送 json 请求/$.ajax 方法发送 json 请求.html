@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>$.ajax方法基本使用</title>
+</head>
+<body>
+	<button id="btn">发送请求</button>
+	<script src="/js/jquery.min.js"></script>
+	<script>
+		// 知识点：$.ajax 方法发送 json 请求
+
+		function fn (response) {
+			console.log(response)
+		}
+
+		$('#btn').on('click', function () {
+			$.ajax({
+				url: '/jsonp',
+
+				// 向服务端传递函数的名字（?cd=名字）
+					// 使用 cb 函数名称时，服务端也需要做些修改
+				jsonp: 'cb',
+
+				// 指定请求成功时调用的函数（有该配置项时，success 配置项作废）（该参数很少用，使用 success 函数就够了）
+                jsonpCallback: 'fn',
+                
+                // 规定请求的类型（默认的是 Ajax 请求）
+                dataType: 'jsonp'/*,
+				
+				success: function (response) {
+					console.log(response)
+				}*/
+
+			})
+		});
+
+		// 测试（检测服务端返回的是否是函数的调用）：控制台 → Network → jsonp 请求文件 → Response
+		// 					判断 👇🏻是否为函数类型					如果是函数类型，就会执行👇🏻这个函数，将数据响应给客户端
+		// 如：typeof jQuery3310423443563452_15512334i56 === 'function' && jQuery310423443563452_15512334i56({"name":"lisi","age":50})
+	</script>
+</body>
+</html>

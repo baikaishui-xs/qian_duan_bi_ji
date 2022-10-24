@@ -1,0 +1,181 @@
+知识点：内置 API
+
+属性：
+    success：接口调用成功的回调函数
+
+    fail：接口调用失败的回调函数
+
+    complete：接口调用结束的回调函数（调用成功、失败都会执行）
+
+事件监听 API
+  作用：监听某些事件的触发
+
+  特性：on 开头
+
+  wx.onWindowResize()
+    触发条件：窗口尺寸发送变化后 触发
+
+  wx.onReachBottom()
+    触发条件：上拉触底
+
+    作用：加载更多数据
+
+    使用场景：整个页面进行滚动
+
+    节流
+      作用：解决连续触发 上拉触底 事件，导致连续发送多个请求的问题
+
+      （1）定义节流阀
+        data: {
+          // 节流阀（true：当前正在进行数据请求）（false：当前没有进行数据请求）
+          isLoading: false
+        }
+        
+      （2）使用节流阀。发送请求时开启节流阀，响应数据后关闭节流阀
+        getData() {
+          this.setData({
+            isLoading: true
+          })
+          complete: () => {
+            this.setData({
+              isLoading: false
+            })
+          }
+        }
+
+      （3）根据节流阀，判断是否发起请求
+        onReachBottom: function() {
+          if (this.data.isLoading) return
+
+          this.getData()
+        }
+    
+    判断是否还有下一条数据
+      当该公式成立，则证明没有下一条数据：页面值 * 每页显示多少条数据 >= 总数据条数
+
+      使用步骤：
+        // 判断是否还有下一条数据
+        if(this.data.page * this.data.pageSize >= this.data.total) {
+          return wx.showToast({
+            title: '没有更多数据了！',
+            icon: 'none'
+          })
+        }
+
+  onPullDownRefresh()
+    触发条件：下拉刷新
+
+    作用：重新加载数据
+
+    使用步骤：
+      （1）开启下拉刷新（-- 页面.json）
+        "enablePullDownRefresh": true
+
+      （2）配置样式（-- 同上）
+        "backgroundColor": "#efefef",
+        "backgroundTextStyle": "dark"
+
+      （3）执行完下拉刷新事件后，停止下拉刷新效果（-- 页面.js）
+        onPullDownRefresh: function () {
+          console.log('下拉刷新已触发')
+          wx.stopPullDownRefresh()
+        }
+    
+同步 API
+  特性：
+    （1）Sync 结尾
+    （2）执行结果可以通过函数返回值直接获取，执行出错会抛出异常
+
+  wx.setStorageSync('key', 'value')
+    作用：向本地存储中写入内容
+
+  uni.getSystemInfoSync()
+    文档：https://uniapp.dcloud.io/api/system/info?id=getsysteminfosync
+
+    作用：获取系统相关信息
+    
+异步 API
+  特性：
+    （1）需要通过 success、fail、complete 接收调用的结果
+  
+  wx.request()
+    作用：发起网络数据请求，通过 success 回调函数接收数据
+
+  wx.showLoading() / wx.hideLoading()
+    作用：显示 loading 提示框
+    作用：关闭 loading 提示框
+
+    例：
+      getData() {
+        wx.showLoading({
+          title: '数据加载中...'
+        })
+        wx.request({
+          url: 'https://...',
+          complete: () => {
+            wx.hideLoading({
+              complete: (res) => {}
+            })
+          }
+        })
+      }
+      
+  wx.setNavigationBarTitle()
+    作用：动态设置当前页面的标题
+
+    例：
+      onReady: function () {
+        wx.setNavigationBarTitle({
+          title: '九十九物'
+        })
+      }
+
+  wx.showToast()
+    作用：显示消息提示框
+
+    属性：
+      title：提示内容
+
+      icon：图标（success：默认值。显示）（none：隐藏）
+
+      duration：提示延迟事件（默认：1500s）
+
+  wx.chooseAddress()
+    作用：获取用户收货地址。调起用户编辑收货地址原生界面，并在编辑完成后返回用户选择的地址。
+
+  
+其它（我也不知道属于什么 API）：
+  scrolltolower：滚动条触底事件
+    使用场景：scroll-view 容器中滚动
+
+API Promise 化
+  说明：小程序内置的 api 都是基于 回调函数 实现的，这容易导致 回调地狱的问题
+
+  作用：将 api 改造成基于 Promise 的异步APi，并解决回调地狱的问题
+  
+  使用步骤：
+    （1）下载 miniprogram-api-promise 第三方包
+      npm i --save miniprogram-api-promise@1.0.4
+
+    （2）重新构建 npm
+      删除 miniprogram_npm 目录
+      重新构建：微信开发者工具 → 工具 → 构建 npm
+
+    （3）Promise 化（-- app.js）
+      import { promisifyAll } from 'miniprogaram-api-promise'
+
+      // 存放 Promise 化的 API
+      const wxp = wx.p = {}
+
+      // promisifyAll 作用：API Promise 化
+      // wx：微信顶级对象
+      promisifyAll(wx, wxp)
+      
+    （4）使用 Promise 化后的 API
+      async getInfo() {
+        const { data: res } = await wx.p.request({
+          method: 'GET',
+          url: 'https://www.escook.cn/api/get',
+          data: { name: 'zs', age: 20 }
+        })
+      }

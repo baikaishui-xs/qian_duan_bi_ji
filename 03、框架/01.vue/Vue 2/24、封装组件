@@ -1,0 +1,70 @@
+知识点：封装组件案例
+
+封装要求：
+  1、允许用户自定义 title 标题
+  2、允许用户自定义 bgcolor 背景色
+  3、允许用户自定义 color 文本颜色
+  4、MyHeader 组件需要在页面顶部进行 fixed 固定定位，且 z-index 等于 999
+
+步骤：
+  1、新建一个 AppDemon.vue（根组件） 用于测试该组件
+  2、将 main.js（入口文件） 中的根组件改为 AppDemon
+  3、编写的代码
+
+    -- MyHeader.vue（根组件）
+
+      <template>
+        <div class="header-container" :style="{ backgroundColor: bgcolor, color: color }">
+          {{title || 'Header 组件'}}
+        </div>
+      </template>
+
+      <script>
+      export default {
+        name: 'MyHeader',
+        props: ['title', 'bgcolor', 'color']
+      }
+      </script>
+
+      <style lang="less" scoped>
+      .header-container {
+        height: 45px;
+        background-color: pink;
+        text-align: center;
+        line-height: 45px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+      }
+      </style>
+
+    -- App.vue
+      
+      <template>
+        <div class="app-container">
+          <h1>App根组件</h1>
+
+          <hr>
+
+          <my-header title="黑马程序员" bgcolor="#000" color="#fff"></my-header>
+        </div>
+      </template>
+
+      <script>
+      import MyHeader from './06.MyHeader/MyHeader.vue'
+
+      export default {
+        name: 'MyApp',
+        components: {
+          MyHeader,
+        },
+      }
+      </script>
+
+      <style lang="less" scoped>
+      .app-container {
+        margin-top: 45px;
+      }
+      </style>

@@ -1,0 +1,130 @@
+知识点：Mock
+
+官网：http://mockjs.com/
+
+作用：模拟数据、模拟后端接口。减少沟通、减少接口联调时间，不需要等待后端接口开发完毕，可以随机生成数据（如：文本、数字、布尔值、日期、邮箱、链接、图片、颜色等）
+
+说明：先把 api 接口的 URL 路径，请求参数、返回数据结构先确定下来。等正式 api接口 开发好以后，只需把前端开发中的 mock 域名，更换成开发域名即可联调，再关闭 mock 开关即可，而无需再去修改前端任何其他代码。
+
+特性：
+  （1）前后端分离：让前端独立于后端进行开发
+  （2）增加单元测试的真实性：通过随机数据，模拟各种场景
+  （3）开发无侵入：灵活插拔。不需要修改既有代码，就可以拦截 Ajax 请求，返回模拟的响应数据
+  （4）用法简单：符合直觉的接口
+  （5）数据类型丰富：随机生成 文本、数字、布尔值、日期、邮箱、链接、图片、颜色等
+  （6）方便扩展：支持扩展更多数据类型，支持自定义函数和正则
+
+方案一：本地 json（需要接口文档）(缺点：需要改代码)
+  原理：请求本地的 json 文件
+  在 public 目录下创建 /mock/user/login.json（该 json 文件内容由课件提供）
+  调试（查看接口返回的数据）：控制台 Network → Fetch/XHR → 刷新页面 → Name（存放请求文件）→ Response
+  -- App.vue
+      data() {
+          return {
+              res: {}
+          }
+      },
+      mounted() {
+          this.axios.get('/mock/user/login.json').then((res) => {
+              this.res = res;  // 获取接口返回的数据
+          })
+      }
+
+方案二：easy-mock 平台（缺点：因为是免费的，人多时，服务器容易崩    解决方法：手动搭建 mock，并在 github 上下载，然后在自己的电脑上搭建 easy-mock 的平台）
+  提示：easy-mock 服务器经常崩，推荐使用 fastmock（官网：www.fastmock.site）
+  特性：在学习时 easy-mock 平台 服务器崩了，无法进行学习，如果用到，请看重新观看 Mock设置（2）05:50 分的视频
+
+方案三（推荐）：集成 Mock API
+  文档：https://github.com/nuysoft/Mock/wiki/Getting-Started
+  特性：不会发送请求，请求会被拦截，但是可以看到数据
+
+  下载 mockjs
+    npm i mockjs --save-dev
+
+  语法规范：
+    数据模板 定义规范：
+      '属性名 | 生成规则': 初始值
+
+      'name|1-9': '*'
+        作用：随机生成 1~9 个字符
+        输出：******
+
+      'name|1-9': 0
+        作用：随机生成 1~9 之间的数
+        输出：6
+
+    数据占位符 定义规范：
+      @占位符（参数[,参数...])
+
+      @id()
+        作用：随机生成 id
+
+      @name()
+        作用：随机生成 英文名
+
+      @cname()
+        作用：随机生成 中文名
+
+      @date(yyyy-MM-dd)
+        作用：随机生成 日期
+
+      @paragraph()
+        作用：随机生成 描述
+
+      @email()
+        作用：随机生成 邮箱地址
+
+    例：生成以下数据
+      {
+        "id": "230000201903033537",
+        "username": "卢平",
+        "date": "1978-09-16",
+        "description": "Kcb jkkvdypcst xef .",
+        "email": "n.qoimyx@ewoea.mh",
+        "age": 29
+      }
+      
+      var data = Mock.mock({
+        id: '@id()',
+        username: '@cname()',
+        date: '@date(yyyy-MM-dd)',
+        description: '@paragraph()',
+        email: '@email()',
+        'age|18-40': 0
+      })
+
+  模拟接口
+    使用步骤：
+    （1）定义 Mock 接口路由，在接口中返回 mock 模拟的数据（-- src/新建 mock.js）
+      import Mock from 'mockjs'
+      const Random = Mock.Random
+
+      // 参数一：请求地址  参数二：响应数据
+      Mock.mock('/api/demo', {
+        "status": 0,
+        "data|30-100": [{
+          "id|5-10": 0, // 随机生成 5-10 的数，默认是 0
+          "username": "@cname",  // 随机生成 中文名称；   @name：随机生成 英文名称
+          "email": "@email",  // 随机生成邮箱
+          "phone|1-9": null,  // 随机生成 1-9 的数字
+          "role": 0,
+          "createTime": 1479048325000,
+          "updateTime": 1479048325000,
+          'img': Random.image()  // 随机生成图片
+        }]
+      })
+  
+    （2）定义 mock 开关（-- main.js）
+      // Mock API开关
+      if (true) {
+        require('@/mock.js')
+      }
+
+    （3）使用 axios 调用该接口，获取数据（-- 组件）
+      created() {
+        axios.get('/api/demo').then(result => {
+          console.log(result)
+        })
+      }
+
+  调试：在 vue 调试工具中查看 data 里的 res 数据，res 里存放的就是 json 数据

@@ -1,0 +1,190 @@
+知识点：封装请求
+
+作用：解决回调地狱
+
+原理：将基于 回调函数 的 API 改造成基于 Promise 的APi
+
+方案一：手动封装
+  使用步骤：
+    （1）封装请求方法（-- request/新建 index.js）
+      export const request = (params) => {
+        return new Promise((resolve, reject) => {
+          wx.request({
+            ...params,
+            success: (result) => {
+              resolve(result);
+            },
+            fail: (err) => {
+              reject(err);
+            }
+          })
+        })
+      }
+
+    （2）引入封装的请求方法（-- 页面.js）
+      import { request } from "../../request/index.js";
+
+    （3）定义 data 数据
+      swiperList: []
+
+    （4）定义请求方法（-- 页面.js）
+      // 获取轮播图数据
+      getSwiperList() {
+        request({
+          url: 'https://api.it120.cc/zcr/banner/list',
+        }).then(res => {
+          this.setData({
+            swiperList: res.data.data.slice(3, 6),
+          })
+        })
+      }
+
+    （5）调用请求方法
+      onLoad: function () {
+        this.getSwiperList()
+      }
+
+  场景：第一次请求回来时，再发送第二次请求，第二次请求回来时，再发送第三次请求
+
+    封装前：
+      // 第一次请求
+      wx.request({
+          url: '',
+          success: (res) => {
+            this.setData({
+              swiperList: res.data.message
+            })
+
+            // 第二次请求
+            wx.request({
+              url: '',
+              success: (res) => {
+                this.setData({
+                  swiperList: res.data.message
+                })
+
+                // 第三次请求
+                wx.request({
+                  url: '',
+                  success: (res) => {
+                    this.setData({
+                      swiperList: res.data.message
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
+
+    封装后：
+      onLoad: function () {
+        request({
+          url: 'https://api.it120.cc/zcr/banner/list',
+        }).then(res => {
+          this.setData({
+            swiperList: res.data.data.slice(3, 6),
+          })
+        })
+      }
+
+      说明：如果要等请求回来时，再去调用请求，在后面加 .then 即可
+    
+方案二：@escook/request-miniprogram（第三方包)（推荐）
+  文档：https://www.npmjs.com/package/@escook/request-miniprogram
+  
+  下载：npm i @escook/request-miniprogram
+
+  使用步骤（-- main.js）：
+    （1）导入
+      // 封装请求
+      import { $http } from '@escook/request-miniprogram'
+
+    （2）挂载
+      原生微信小程序 的顶级对象是 wx
+        wx.$http = $http
+
+      uni-app 的顶级对象是 uni
+        uni.$http = $http
+
+    （3）配置请求根路径
+      $http.baseUrl = 'https://www.example.com'
+
+    （4）发送请求
+      data：参数对象
+
+      // 发起 GET 请求
+      $http.get(url, 【data】)
+      
+      // 发起 POST 请求
+      $http.post(url, 【data】)
+      
+      // 发起 PUT 请求
+      $http.put(url, 【data】)
+      
+      // 发起 DELETE 请求
+      $http.delete(url, 【data】)
+
+      例：
+        async getSwiperList () {
+          // 发送请求
+          const { data: res } = await uni.$http.get('/api/public/v1/home/swiperdata')
+
+          // 请求失败
+          if (res.meta.status !== 200) {
+            return uni.showToast({
+              title: '数据请求失败！',
+              duration: 1500,
+              icon: 'none'
+            })
+          }
+
+          // 请求成功
+          this.swiperList = res.message
+        }
+
+    （5）设置 请求拦截器（请求开始之前做一些事情）
+      // 请求拦截器      
+      $http.beforeRequest = function (options) {
+        // 展示 loading 效果
+        uni.showLoading({
+          title: '数据加载中...'
+        })
+      }
+    
+    （6）设置 响应拦截器（请求完成之后做一些事情）
+      // 响应拦截器
+      $http.afterRequest = function () {
+        // 隐藏 loading 效果
+        uni.hideLoading()
+      }
+
+  封装 uni.showToast
+    作用：简化请求失败处理逻辑
+
+    （1）封装（-- main.js）
+      // 封装 uni.showToast。作用：简化请求失败处理逻辑
+      uni.$showMsg = function(title = '数据请求失败！', duration = 1500) {
+        uni.showToast({
+          title,
+          duration,
+          icon:'none'
+        })
+      }
+
+    （2）使用
+      // 请求失败
+      if (res.meta.status !== 200) return uni.$showMsg()
+
+      // 请求成功
+      uni.$showMsg('数据请求成功！')
+
+  其它：
+    // 自定义 header 请求头
+      $http.beforeRequest = function (options) {
+        if (options.url.indexOf('/home/catitems) !== -1) {
+          options.header = {
+            'X-Test': 'AAA'
+          }
+        }
+      }

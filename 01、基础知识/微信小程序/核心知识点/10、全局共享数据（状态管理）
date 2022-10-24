@@ -1,0 +1,168 @@
+知识点：全局数据共享（状态管理）
+
+说明：组件与组件之间的数据共享
+
+特性：可读可写
+
+方案一：MobX。将共享数据存储在 Store 实例对象中
+  - mobx-miniprogram 包：创建 Store 实例对象
+  - mobx-miniprogram-bindings 包：把 Store 中的数据或方法，绑定到组件或页面中使用
+
+  下载
+    （1）下载包
+      npm i --save mobx-miniprogram@4.13.2 mobx-miniprogram-bindings@1.2.1
+
+    （2）重新构建 npm
+      删除 miniprogram_npm 目录
+      重新构建：微信开发者工具 → 工具 → 构建 npm
+
+  将 Store 中的成员绑定到 页面 中
+    （1）创建 Store 实例对象，并共享出去（-- 根目录/新建 store/store.js）
+      store 目录：存储 MobX 文件
+
+      import { observable, action } from 'mobx-miniprogram'
+
+      export const store observable({
+        // 数据字段
+        numA: 1,
+        numB: 2
+
+        // 计算属性
+        get sum() {
+          return this.numA + this.numB
+        }
+
+        // action 方法：修改 store 中的数据
+        // step：外界传递过来的参数
+        updateNum1: action(function (step) {
+          this.numA += step
+        }),
+        updateNum2: action(function (step) {
+          this.numB += step
+        }),
+      })
+
+    （2）将 Store 成员绑定到页面中（-- 页面.js）
+      import { createStoreBindings } from 'mobx-miniprogram-bindings'
+      import { store } from '../../store/store'
+
+      onLoad: function () {
+        this.storeBindings = createStoreBindings(this. {
+          // 数据源
+          store,
+
+          // 当前页面要使用的 数据
+          fields: ['numA', 'numB', 'sum'],
+
+          // 当前页面要使用的 方法
+          actions: ['updateNum1']
+        })
+      }
+
+    （3）清理绑定的 Store 成员（-- 同上）
+      onUnload: function () {
+        this.createStoreBindings.destroyStoreBindings()
+      }
+
+    （4）使用 Store 中的数据、修改 Store 中的数据
+      （-- 页面.wxml）
+        <view>{{numA}} + {{numB}} = {{sum}}</view>
+
+        <van-button type="primary" bindtap="btnHandler1" data-step="{{1}}">
+          numA + 1
+        </van-button>
+        <van-button type="danger" bindtap="btnHandler1" data-step="{{-1}}">
+          numA - 1
+        </van-button>
+
+      （-- 页面.js）
+        btnHandler1(e) {
+          this.updateNum1(e.target.dataset.step)
+        }
+      
+  将 Store 中的成员绑定到 组件 中
+    （1）将 Store 中的成员绑定到 组件 中（-- 组件.js）
+      import { storeBindingsBehavior } from 'mobx-miniprogram-bindings'
+      import { store } from '../../store/store'
+
+      Component({
+        behaviors: [storeBindingsBehavior],
+
+        storeBindings: {
+          // 数据源
+          store,
+
+          // 当前页面要使用的数据
+          fields: {   
+            sum: 'sum'
+          },
+
+          // 当前页面要使用的 方法
+          actions: {
+            updateNum2: 'updateNum2'
+          }
+        }
+      })
+
+    
+    （2）使用 Store 中的数据、修改 Store 中的数据
+      （-- 组件.wxml）
+        <view>{{numA}} + {{numB}} = {{sum}}</view>
+
+        <van-button type="primary" bindtap="btnHandler2" data-step="{{1}}">
+          numB + 1
+        </van-button>
+        <van-button type="danger" bindtap="btnHandler2" data-step="{{-1}}">
+          numB - 1
+        </van-button>
+
+      （-- 组件.js）
+        methods: {
+          btnHandler2(e) {
+            this.updateNum2(e.target.dataset.step)
+          }
+        }
+
+方案二：将共享数据存储在 globalData
+  使用步骤：
+
+    （1）将数据存储到 globalData 中（-- App.vue）
+      globalData: {
+        name: 'zcr'
+      }
+
+    （2）通过 getApp().globalData.属性名 获取数据
+      getApp().globalData.name
+
+  例子：
+    （-- App.vue）
+      <script>
+        export default {
+          globalData: {
+            name: 'zcr'
+          }
+        }
+      </script>
+
+    （-- index.vue）
+      <template>
+        <view class="content">
+          <view>
+            <text class="title">{{name}}</text>
+          </view>
+        </view>
+      </template>
+
+      <script>
+      export default {
+        data() {
+          return {
+            name: ''
+          }
+        },
+        onLoad() {
+          this.name = getApp().globalData.name
+        }
+      }
+      </script>
+

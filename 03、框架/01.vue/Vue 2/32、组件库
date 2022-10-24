@@ -1,0 +1,17 @@
+知识点：组件库
+
+概念：把自己封装的 .vue 组件 整理、打包、并发布为 npm 的包，从而供其他人下载和使用。这种可以直接下载并在项目中使用的现成组件，就叫做 vue 组件库
+
+组件库 和 bootstrap 的区别
+  1、bootstrap 只提供了纯粹的原材料（ css 样式、HTML 结构以及 JS 特效），需要由开发者做进一步的组装和改造
+  2、vue 组件库是遵循 vue 语法、高度定制的现成组件，开箱即用
+
+常用组件库：
+  
+  PC 端：
+    1、Element UI（https://element.eleme.cn/#/zh-CN）
+    2、View UI（http://v1.iviewui.com/）
+    
+  移动端：
+    1、Mint UI（http://mint-ui.github.io/#!/zh-cn）
+    2、Vant（https://vant-contrib.gitee.io/vant/#/zh-CN/）

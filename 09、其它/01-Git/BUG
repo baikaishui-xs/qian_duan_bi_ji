@@ -1,0 +1,15 @@
+Git: Host key verification failed.（Git:主机密钥验证失败。）
+解决方法：
+  一、重新将远程仓库克隆到本地，在进行上传
+  二、添加到可信列表中：ssh -T git@gitee.com
+
+Please make sure you have the correct access rightsand the repository exists.（请确保您拥有正确的访问权限并且存储库存在。）
+解决方法：
+  一、重新将远程仓库克隆到本地，在进行上传
+  二、添加到可信列表中：ssh -T git@gitee.com
+
+Git: hint: Pulling without specifying how to reconcile divergent branches is（在不指定如何协调分歧分支的情况下进行拉取是非常困难的）
+解决方法：重新将远程仓库克隆到本地，在进行上传
+  一、重新将远程仓库克隆到本地，在进行上传
+  二、添加到可信列表中：ssh -T git@gitee.com
+

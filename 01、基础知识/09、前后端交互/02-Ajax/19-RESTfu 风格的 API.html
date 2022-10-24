@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="/js/jquery.min.js"></script>
+	<script type="text/javascript">
+		// 知识点：RESTfu 风格的 API
+
+		// RESTfu：规范，如何设置请求地址的规范
+
+		// 作用：规定了 增删改查 以及其它操作所对应的请求地址应该写成什么格式，操作所对应的请求方式应该是什么
+
+		// 当前知识点中 API 值：客户端向服务端发送请求的请求地址
+
+		// 传统 请求地址的格式：
+		// 缺点：语言不明确，且没有统一的规范
+
+			// GET  http://www.example.com/getUsers 		// 获取用户列表
+			// GET  http://www.example.com/getUser?id=1 	// 比如获取某一个用户的信息
+			// POST http://www.example.com/modifyUser 		// 修改用户信息
+			// GET  http://www.example.com/deleteUser?id=1 	// 删除用户信息
+
+		// RESTfu 请求地址的格式
+		// 特性：
+			// 1、传统的表单提交不支持 PUT 和 DELETE 请求方式，但 Ajax 支持 
+			// 2、请求地址 和对应的 数据库集合名称 要一致 
+
+			// GET：	http://www.example.com/users/1  获取数据 
+			// POST：	http://www.example.com/users    添加数据
+			// PUT：	http://www.example.com/users/1  更新数据
+			// DELETE：	http://www.example.com/users/1 	删除数据
+
+		// 获取用户列表信息
+		$.ajax({
+			type: 'get',
+			url: '/users',
+			success: function (response) {
+				console.log(response)
+			}
+		})
+
+		// 获取id为1的用户信息
+		$.ajax({
+			type: 'get',
+			url: '/users/1',
+			success: function (response) {
+				console.log(response)
+			}
+		})
+
+		// 获取id为1的用户信息
+		$.ajax({
+			type: 'delete',
+			url: '/users/10',
+			success: function (response) {
+				console.log(response)
+			}
+		})
+
+		// 获取id为1的用户信息
+		$.ajax({
+			type: 'put',
+			url: '/users/10',
+			success: function (response) {
+				console.log(response)
+			}
+		})
+	</script>
+</body>
+</html>

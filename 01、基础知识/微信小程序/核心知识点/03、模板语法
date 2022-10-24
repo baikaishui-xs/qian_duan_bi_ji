@@ -1,0 +1,156 @@
+知识点：模板语法
+
+作用：结合基础组件、事件系统 可以构建出页面的结构
+
+数据绑定
+
+  （1）创建数据（-- ***.js）
+    Page({
+      data: {
+        msg: "hello mina"
+      }
+    })
+
+  （2）使用数据（-- ***.wxml）
+    Mustache 语法
+      说明：在微信小程序中叫 Mustache 语法，vue 中叫插值表达式
+      作用：
+        1、动态绑定内容
+          <view>{{ msg }}</view>
+
+        2、动态绑定属性
+          <image src="{{imgSrc}}"></image>
+
+        3、运算（三元元素、算数、等）
+          <view> {{ num >= 5 ? '1' : '2' }} </view>
+          <view> {{ num + 1}} </view>
+
+渲染数组
+  语法：wx:for="{{数组}}" wx:for-item="循环项的名称" wx:for-index="循环性的索引" wx:key="唯一值 或 *this"
+  特性：
+    1、只有一层循环，可以省略 wx:for-item="item" wx:for-index="index"，默认的 循环项 和 索引 就是 item 和 index
+    2、wx:key 作用是性能优化，和 vue 中的 v-for 一样
+
+  使用步骤：
+    （1）创建数组（-- ***.js）
+      list: [
+        {
+          id: 0,
+          name: '猪八戒'
+        },
+        {
+          id: 1,
+          name: '天蓬元帅'
+        },
+        {
+          id: 2,
+          name: '悟能'
+        }
+      ]
+
+    （2）渲染数组（-- ***.wxml）
+        // <view wx:for="{{list}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+
+        // 常用写法：
+        <view wx:for="{{list}}" wx:key="id">
+          索引：{{index}}
+          值：{{item.name}}
+        </view> 
+
+渲染对象
+  语法：wx:for="{{对象}}" wx:for-item="对象的值" wx:for-index="对象的属性" wx:key="唯一值"
+
+  使用步骤：
+    （1）创建对象（-- ***.js）
+      person: {
+        age: 74,
+        height: 145,
+        weight: 200,
+        name: '富婆'
+      }
+
+    （2）渲染对象（-- ***.wxml）
+      <view wx:for="{{person}}" wx:for-item="key" wx:for-index="value" wx:key="age">
+        属性名：{{key}}
+        属性值：{{value}}
+      </view> 
+
+block
+  作用：
+    （1）占位符标签。每个循环项不用 view 包裹，而是直接渲染
+      person: {
+        age: 74,
+        height: 145,
+        weight: 200,
+        name: '富婆'
+      }
+
+      <view>
+        <block wx:for="{{list}}" wx:key="id">
+          索引：{{index}}
+          值：{{item.name}}
+        </block>
+      </view> 
+
+    （2）一次性控制多个组件的展示与隐藏
+      <block wx:if="{{true}}">
+        <view>view1</view>
+        <view>view2</view>
+      </block>
+    
+  
+  渲染结构：
+
+    使用 block 前
+
+      <page>
+        <view>
+          索引：0
+          值：猪八戒
+        </view>
+        <view>
+          索引：1
+          值：天蓬元帅
+        </view>
+        <view>
+          索引：2
+          值：悟能
+        </view>
+      </page>
+
+    使用 block 后
+      
+      <page>
+        <view>
+          索引：0
+          值：猪八戒
+          索引：1
+          值：天蓬元帅
+          索引：2
+          值：悟能
+        </view>
+      </page>
+
+条件渲染
+  wx:if
+    作用：显示隐藏元素
+    原理：动态 创建 和 销毁 元素，比较消耗性能
+    使用场景：只需要切换一次显示和隐藏，且初始值为 false 时，性能更好
+
+    <view wx:if="{{true}}">显示</view>
+    <view wx:if="{{false}}">隐藏</view>
+
+    相当于 if、else if、else
+    <view wx:if="{{type === 1}}">1</view>
+    <view wx:elif="{{type === 2}}">2</view>
+    <view wx:else>3</view>
+  
+  hidden
+    作用：显示隐藏元素
+    原理：使用 display 来控制
+    使用场景：频繁切换元素的显示和隐藏时，性能更好
+    提示：不能和 display 一起使用，后者会覆盖前者
+
+    <view hidden>隐藏</view>
+    <view hidden="{{true}}">隐藏</view>
+    <view hidden="{{false}}">显示</view>

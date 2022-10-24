@@ -1,0 +1,75 @@
+知识点：配置文件
+
+全局配置 文件（-- app.json）
+  全局配置文档：https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html
+
+  作用：
+    pages 配置项：注册页面
+    window 配置项：设置全局样式。如：状态栏、导航条、、标题、窗口背景色
+    style 配置项：定义样式版本
+    sitemapLocation：指定 sitemap.json 的存放位置
+    tabBar 配置项：开启 tabBar 功能 
+
+  创建页面
+    （1）注册页面。在 -- app.json 中的 pages 字段中注册页面
+      语法："pages/页面名称/页面名称"
+      特性：
+        1、系统会自动在 pages 中新增该页面文件，并建好该页面文件的依赖文件（该特性仅在小程序开发工具中生效）
+        2、首页。第一个页面为小程序默认显示的页面
+        3、不要写后缀名
+      例：
+        "pages": [  // 当前小程序拥有的页面
+          "pages/demon1/demon1"
+          "pages/index/index",
+          "pages/logs/logs"
+        ]
+
+  "window": {                                // 设置小程序的状态栏、导航条、标题、窗口背景色
+    "navigationBarTitleText": "Weixin",      // 导航栏 标题
+    "navigationBarTextStyle": "black",       // 导航栏 文字颜色。特性：颜色仅支持 black（黑色）和 white（白色）
+    "navigationBarBackgroundColor": "#fff",  // 导航栏 背景颜色。特性：仅支持 16 进制
+
+    提示：模拟器可能会出现一些问题，如下拉刷新样式会自动发生变化等。但在真机中不会出现这写问题，只要真机不出现问题就没关系
+    "enablePullDownRefresh": true,           // 是否开启 下拉刷新（更推荐在页面中配置这个效果）
+    "backgroundTextStyle": "dark",           // 是否开启 下拉刷新的图标。特性：颜色仅支持 （light：白色）（dark：灰色）
+    "backgroundColor": "#efefef",            // 下拉刷新背景色
+
+    上拉触底距离
+    作用：上拉触底时加载更多数据
+    特性：默认距离为 50px
+    "onReachBottomDistance": 50,
+  },
+
+项目配置 文件（project.config.json）
+  说明：在微信小程序的 详情 中进行设置时，项目配置 文件也会跟着发送变化
+
+  作用：
+    setting 字段：编译相关配置
+    projectname 字段：项目名称
+    appid 字段：小程序账号 id
+
+页面配置 文件（-- 页面.json）
+  文档：https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/page.html
+
+  作用：为页面单独设置样式。设置小程序的状态栏、导航条、标题、窗口背景色
+
+  "usingComponents": {},                      // 引用自定义组件
+  "navigationBarTitleText": "Weixin",         // 导航栏 标题
+  "navigationBarTextStyle": "black",          // 导航栏 文字颜色，特性：颜色仅支持 black（黑色）和 white（白色）
+  "navigationBarBackgroundColor": "#0094ff",  // 导航栏 背景颜色
+  "enablePullDownRefresh": true,              // 是否开启 下拉刷新
+  "backgroundTextStyle": "dark",              // 是否开启 下拉刷新的图标
+
+微信索引配置 文件（-- sitemap.json）
+  作用：配置小程序页面是否允许微信索引。类似于传统网页的 SEO
+
+  {
+    "desc": "关于本文件的更多信息，请参考文档 https://developers.weixin.qq.com/miniprogram/dev/framework/sitemap.html",
+    // 索引规则
+    "rules": [{
+    // 都允许被索引（disallow：不允许被索引）
+    "action": "allow",
+    // *：所有页面
+    "page": "*"
+    }]
+  }

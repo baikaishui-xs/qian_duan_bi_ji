@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button id="btn">点我发送请求</button>
+	<script src="/js/ajax.js"></script>
+	<script>
+	// 知识点：CORS 跨域资源共享 方法
+
+	// 解决同源请求限制的另一种方法：
+		// CORS 跨域资源共享 方法：
+			// 跨域：非同源
+			// 原理：允许浏览器向跨域的服务端发送 Ajax 请求
+			// 特性：
+				// 1、只需要在服务端进行配置，无需配置客户端
+				// 2、当客户端向服务端发送的是跨域请求，会在请求头中自动添加 origin 字段，字段的值为当前发送请求的 域信息（包含 协议、域名、端口号）（当前网站的页面地址 如：http://localhost:3000），服务端会根据字段的值来决定是否同意这次请求，响应头中包含 Access-Control-Access-Origin 字段代表同意这次请求，响应头中没有该字段，代表不同意这次请求
+				// 3、Access-Control-Access-Origin：存储了允许访问当前服务端的客户端（白名单）
+					// Access-Control-Access-Origin：'http://localhost:3000'  （允许 这个客户端 访问我）
+					// Access-Control-Allow-Origin: '*' （允许 所有客户端 访问我）
+				// 4、CORS 跨域资源共享 方法 比 jsonp 方法更简单
+			// 使用步骤：在访问的跨域服务端完成（1）（2）
+		// 获取按钮
+		var btn = document.getElementById('btn');
+		// 为按钮添加点击事件
+		btn.onclick = function () {
+			ajax({
+				type: 'get',
+				url: 'http://localhost:3001/cross',
+				success: function (data) {
+					console.log(data)
+				}
+			})
+		};
+	</script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+知识点：自定义组件、父组件向子组件传递数据、子组件向父组件传递数据
+
+文档：https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/
+
+样式隔离
+  特性：
+    （1）默认情况下，自定义组件的样式只对当前组件生效
+
+    （2）app.wxss 中的全局样式对组件无效
+
+    （3）只有 class 选择器会有样式隔离效果，id 选择器、属性选择器、标签选择器 不受样式隔离
+
+  在外界控制组件内部的样式
+    参数
+      isolated：启动样式隔离（外界样式无法影响组件内部样式，组件内部样式也不会影响外界样式）
+
+      apply-shared：外界样式会影响组件内部样式，组件内部样式不会影响外界样式
+
+      shared：外界样式会影响组件内部样式，组件内部样式也会影响外界样式
+
+    方法一：styleIsolation（-- 组件.js）
+      例：
+        Component({
+          options: {
+            styleIsolation: 'isolated'
+          }
+        })
+
+    方法二：styleIsolation（-- 组件.json）
+      "styleIsolation": "isolated"
+
+属性
+  methods 属性
+    作用：定义 事件处理函数、自定义方法
+    
+    例：
+      // 事件处理函数
+      addCount() {
+        this.setData({ count: this.data.count + 1 })
+        this._showCount()
+      },
+
+      // 自定义方法【推荐以 _ 开头】
+      _showCount() {
+        wx.showToast({
+          title: 'count 值为：' + this.data.count,
+          icon: 'none'
+        })
+      }
+
+      <button bindtap="addCount">+1</button>
+
+  properties 属性
+    区别
+      properties 属性是可读可写的（data 和 properties 指向的是同一个对象）
+
+      为 properties 属性中的数据重新赋值
+        例：
+          this.setDate({
+            num: this.properties.num + 1
+          })
+
+    提示：该属性的知识点和 Props 高级用法一样，请查看【知识点：props 高级用法】
+
+  observers 属性
+    作用：数据监听器。类似于 vue 中的 watch 侦听器。监听任何属性和数据的变化，从而执行特定的操作
+
+    例：【监听数据】sum 根据数据监听器自动计算
+      <view>{{n1}} + {{n2}} = {{sum}}</view>
+      <button size="mini" bindtap="addN1">n1自增</button>
+      <button size="mini" bindtap="addN2">n2自增</button>
+
+      data: {
+        n1: 0,
+        n2: 0,
+        sum: 0
+      },
+      methods: {
+        addN1() {
+          this.setData({
+            n1: this.data.n1 + 1
+          })
+        },
+        addN2() {
+          this.setData({
+            n2: this.data.n2 + 1
+          })
+        },
+      },
+      observers: {
+        // 语法：'监听的数据, 监听的数据, ...': function(获取监听数据发送变化的新值, 获取监听数据发送变化的新值, ...)
+
+        'n1, n2': function(newN1, newN2) {
+          this.setData({
+            sum: n1 + n2
+          })
+        }
+      }
+
+    例：【监听属性】
+      提示：如果要监听对象中的所有属性，可以使用 **，如 rgb.**
+
+      observers: {
+        'rgb.r, rgb.g, rgb.b': function(r, g, b) {
+          this.setData({
+            fullColor: `${r}, ${g}, ${b}`
+          })
+        }
+      }
+
+    纯数据字段
+      概念：纯数据字段指的是 data 中的数据既不会展示在界面上，也不会传递给其它组件，仅仅在当前组件内部使用，而这个数据就是纯数据字段
+
+      作用：提高页面更新的性能
+
+      例：
+        // 以下的 fullColor 就是 纯数据字段，因为 没有 在界面上展示
+        <view style="background-color: rgb({{fullColor}});"></view>
+
+        // 以下的 fullColor 不是 纯数据字段，因为 在 界面上展示了
+        <view>{{fullColor}}</view>
+
+      使用步骤：
+        （1）定义规则
+          options: {
+            // 指定所有 _ 开头的数据字段为纯数据字段
+            pureDataPattern: /^_/
+          },
+
+        （2）在需要改造成纯数据字段的数据前面加上 _
+          data: {
+            a: true, // 普通数据字段
+
+            _b: true, // 纯数据字段
+          }
+
+插槽
+  详见【知识点：插槽】
+
+  区别
+    当使用多个插槽时需要进行配置
+      options: {
+        multipleSlots: true  // 允许使用多个插槽
+      }
+
+    在组件中填充内容时，不需要用 template 标签包裹，直接为标签添加 slot="插槽名" 即可
+    <Left>
+      <p slot="neirong">这是在 Left 组件的内容区域，定义的 p 标签</p>
+    </Left>
+
+父组件向子组件传递数据
+  父组件：
+    （1）通过 自定义属性 将数据传递给子组件
+      <Tabs tabs="{{tabs}}">内容</Tabs>
+  
+  子组件：
+    （2）通过 properties 接收父组件传递过来的数据
+      properties: {  // 接收父组件通过自定义属性传递给子组件的数据，这个数据可以直接在子组件中使用的，相当与 data 中的数据
+        tabs: {
+          type: Array  // 接收的数据类型
+          value: []  // 默认值
+        }
+      }
+
+    （3）将父组件传递过来的数据，转存到 data 中
+      handleItemChange() {
+          // 错误写法：let {tabs} = this.data;  // 不要直接使用 this.data.数据 修改 data 中的数据，因为该方法对复杂数据类型引用的是地址，修改值会影响原值
+          let tabs=JSON.parse(JSON.stringify(this.data.tabs));  // 深拷贝。不要直接修改 this.data.数据，应该先深拷贝，再进行修改
+      }
+
+父组件向子组件传递方法
+  ???
+
+获取组件的实例对象
+  作用：获取组件的中的数据和方法
+
+  语法：this.selectComponent("id 或 class 选择器")
+
+  例：
+    <my-test3 count="{{count}}" bind:sync="syncCount" class="customA"></my-test3>
+
+    getChild() {
+      const child = this.selectComponent('.customA')
+
+      // 设置组件中的 data 数据
+      child.setData({
+        count: child.properties.count + 1
+      })
+
+      // 调用组件中的自定义事件
+      this.triggerEvent('sync', { value: this.properties.count })
+
+    }
+
+子组件向父组件传递数据和方法
+  父组件：
+    （1）通过 自定义事件，调用获取子组件数据的方法
+      <Tabs bind:sync="handleItemChange">内容</Tabs>
+
+    （2）通过 方法中的 e.detail 接收子组件传递过来的数据，并转存到 data 中
+      handleItemChange(e) {
+        const {index} = e.detail;  // 接收子组件传递过来的数据
+      }
+
+  子组件：
+    （3）调用 自定义事件，将子组件的数据传递给父组件
+      语法：this.triggerEvent("自定义事件名", {传递的数据})
+
+      this.triggerEvent("numchange", {index});
+
+behaviors
+  文档：https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/behaviors.html
+
+  作用：实现组件间代码共享，类似于 vue 中的 mixins
+
+  工作方式：每个 behavior 可以共享一组属性、数据、生命周期函数和方法。组件引用它时，它的属性、数据和方法会被合并到组件中
+
+  节点
+    properties：属性
+
+    data：数据
+
+    methods：方法
+
+    behaviors：引入其它的 behavior
+
+    created：组件生命周期函数
+
+    attached：组件生命周期函数
+
+    ready：组件生命周期函数
+
+    moved：组件生命周期函数
+
+    detached：组件生命周期函数
+
+  同名字段覆盖
+    （1）同名 data 数据字段
+      - 若同名的 data 数据字段都是对象类型，会进行对象合并
+      - 其余情况进行数据覆盖。覆盖规则为： 组件 > 父 behavior > 子 behavior
+
+  使用步骤：
+    （1）调用 Behavior 方法，创建实例对象，并共享出去（-- 根目录/新建 behaviors/my-behavior.js）
+      module.exports = Behavior({
+
+        // 私有数据节点
+        data: { 
+          username: 'zs'
+        },
+
+        // 属性节点
+        properties: {},
+        
+        // 事件处理函数和自定义方法节点
+        methods: {}
+      })
+
+    （2）导入 Behavior（-- 组件.js)
+      const myBehavior = require("../../behaviors/my-behavior")
+
+    （3）挂载到 behaviors 数组节点中（-- 同上)
+      Component({
+        behaviors: [myBehavior]
+      })
+
+    （4）使用（-- 同上)
+      <view>{{username}}</view>
+
+自定义组件
+  使用步骤：
+  （1）搭建组件目录
+    创建用于存放组件的目录：根目录/新建 components/新建 组件目录
+    快速创建并搭建组件文件：wxapp-helper（VSCode插件）
+
+    例：
+      项目根目录
+        components
+          Tabs
+            Tabs.js
+            Tabs.json
+            Tabs.wxml
+            Tabs.wxss
+
+  （2）搭建 页面 html 结构（-- Tabs.wxml）
+    <view class="tabs">
+
+      <view class="tabs_title">
+      
+        /*  这些地方将来会复用，所以不能写死
+          <view class="tabs_title">
+            <view class="title_itme">首页</view>
+            <view class="title_itme">原创</view>
+            <view class="title_itme">分类</view>
+            <view class="title_itme">关于</view>
+          </view>
+        */
+
+        <view 
+        wx:for="{{tabs}}" 
+        wx:key="id" 
+        class="title_item {{item.isActive?'active':'' 
+        bindtap="hanldeItemTap" 
+        data-index="{{index}}">  // 传递索引
+          {{item.name}}
+        </view>
+
+      </view>
+
+      <view class="tabs_content">
+        <slow></slow>  // 占位符、插槽
+      </view>
+
+    </view>
+
+  （3）搭建 页面 css 样式（-- Tabs.wxss）
+    .tabs {}
+    .tabs_title {
+      display: flex;
+      padding: 10px 0;
+    }
+    .title_itme {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .active {
+      color: red;
+      border-bottom: 5px solid currentColor;
+    }
+    .tabs_cotent {}
+
+  （）在要使用该组件的页面中的页面配置文件中声明组件
+    "usingComponents": { 
+      "Tabs": "../../components/Tabs/Tabs"
+    }
+
+  （4）搭建 页面 js 行为（-- Tabs.js）
+    特性：
+      1、页面 .js 文件中的事件回调函数存放在 data 同层级下
+      2、组件 .js 文件中的事件回调函数存放在 methods 里
+
+    properties: {
+      tabs: {
+        type: Array  // 接收的数据类型
+        value: []  // 默认值
+      }
+    }
+    data: {
+      
+    },
+    methods: {
+      hanldeItemTap() {
+        const {index} = e.currentTarget.dataset;  // 获取索引
+        this.triggerEvent("itemChange", {index});
+      }
+    }
+
+  （5）引入组件
+    局部引入（-- pages/demon/demon.json）
+      {
+        // 引入组件
+        "usingComponents": {
+          "Tabs": "../../components/Tabs/Tabs"
+        }
+      }
+    
+    全局引入（-- app.json)
+      {
+        // 引入组件
+        "usingComponents": {
+          "Tabs": "../../components/Tabs/Tabs"
+        }
+      }
+
+  （6）使用组件（-- demon.wxml）
+    <Tabs tabs="{{tabs}}" binditemChange="handleItemChange" >
+      内容
+    </Tabs>
+
+  （7）父组件配置复用的地方（-- demon.js）
+    data: {
+      tabs:[
+        {
+          id:0,
+          name:"首页",
+          isActive:true
+        },
+        {
+          id:1,
+          name:"原创",
+          isActive:true
+        },
+        {
+          id:2,
+          name:"分类",
+          isActive:true
+        },
+        {
+          id:3,
+          name:"关于",
+          isActive:true
+        }
+      ]
+    },
+    handleItemChange(e) {
+      const {index} = e.detail;
+
+      let tabs=JSON.parse(JSON.stringify(this.data.tabs));
+
+      tabs.forEach(v, i) =>i === index ? v.isActive = true : v.isActive = false;  // 遍历数组，特性：遍历数组的时候修改了 v，也会导致原数组被修改
+      this.setData({
+        tabs
+      })
+    }
+
+  （8）使用插槽，将不确定的地方，交由用户自定义
+    <Tabs tabs="{{tabs}}" binditemChange="handleItemChange">
+      <block wx:if="{{tabs[0].isActive}}">0</block>
+      <block wx:elif="{{tabs[1].isActive}}">1</block>
+      <block wx:elif="{{tabs[2].isActive}}">2</block>
+      <block wx:else">3</block>
+    </Tabs>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+        // 知识点：异步请求
+        // ajax 发送请求，在 js 中属于异步代码
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('get', 'http://localhost:3000/first', false);
+		xhr.send();
+		xhr.onreadystatechange = function (){
+			if (xhr.readyState == 4) {
+				console.log('2')
+				console.log(xhr.responseText)
+			}
+		}
+		console.log('1');
+		
+	</script>
+</body>
+</html>

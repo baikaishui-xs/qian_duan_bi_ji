@@ -1,0 +1,50 @@
+知识点：应用生命周期
+
+文档：https://developers.weixin.qq.com/miniprogram/dev/reference/api/App.html
+文档：https://uniapp.dcloud.io/collocation/frame/lifecycle?id=%e5%ba%94%e7%94%a8%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f
+
+概念：小程序从 启动 → 运行 → 销毁 的过程
+
+生命周期函数（-- app.js）
+
+  App({
+
+    （1）onLaunch
+      触发：应用第一次启动后
+      作用：获取数据
+      onLaunch() {
+        console.log("onLaunch");
+      },
+
+    （2）onShow
+      触发：应用 显示 后。如 从其他页面、小程序 回到该页面
+      作用：重置数据和页面效果
+      onShow(){
+        console.log("onShow");
+      },
+
+    （3）onHide
+      触发：应用 隐藏 后。如 切屏、打开其它小程序、离开应用
+      作用：暂停或清除定时器
+      onHide(){
+        console.log("Hide");
+      },
+
+    （4）onError
+      触发：代码发生错误时
+      作用：在应用发生代码报错的时候，收集用户的错误信息，通过异步请求 将错误的信息发送后台去
+      onError(err){
+        console.log("onError");
+        console.log(err);
+      },
+
+    （5）onPageNotFound
+      触发：页面找不到时。应用第一次启动的时候，如果找不到第一个入口页面 才会触发
+      作用：页面不存在时，重新跳转到新的页面，但是不能跳到 tabbar 页面和导航组件类似  
+      onPageNotFound(){
+        wx.navigateTo({  跳转页面
+          url: '/pages/demo09/demo09' 
+        });  
+        console.log("onPageNotFound");
+      }
+  })

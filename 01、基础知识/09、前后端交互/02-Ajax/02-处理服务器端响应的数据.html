@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+
+<body>
+	<script type="text/javascript">
+		// 知识点：处理服务器端响应的数据
+
+		// 主流方法 onload事件：
+		// 优点：提高性能。该方法只会被调用一次
+		// 缺点：不兼容 IE低版本
+		var xhr = new XMLHttpRequest();
+
+		xhr.open('get', 'http://localhost:3000/responseData');	// 演示 app.js
+		xhr.send();
+		xhr.onload = function () {
+
+			// xhr.responseText：获取响应数据 
+			// 在 http 请求与响应的过程中，请求参数和响应内容，最终都会被转换为字符串进行传输，所以在客户端拿到的结果是 json 字符串
+			// console.log(typeof xhr.responseText)
+
+			// （1）转换：将 JSON 字符串转换为 JSON 对象
+			// 方法：JSON.parse(服务器端响应的json字符串)
+			var responseText = JSON.parse(xhr.responseText);
+
+			// （2）测试：在控制台输出处理结果
+			console.log(responseText)
+
+			// （3）拼接：将数据和html字符串进行拼接
+			var str = '<h2>' + responseText.name + '</h2>';
+
+			// （4）追加：将拼接的结果追加到页面中
+			document.body.innerHTML = str;
+
+		}
+
+		// 过时方法 onreadystatechange事件：
+		// 优点：兼容 IE低版本
+		// 缺点：浪费性能。该方法需要调用多次
+		var xhr = new XMLHttpRequest();
+		// 状态码：0 已经创建了ajax对象 但是还没有对ajax对象进行配置
+		console.log(xhr.readyState);
+		xhr.open('get', 'http://localhost:3000/readystate');	// 演示 app.js
+		// 状态码：1 已经对ajax对象进行配置 但是还没有发送请求
+		console.log(xhr.readyState);
+
+		// 当ajax状态码发生变化的时候触发
+		xhr.onreadystatechange = function () {
+			// 2 请求已经发送了
+			// 3 已经接收到服务器端的部分数据了
+			// 4 服务器端的响应数据已经接收完成
+			console.log(xhr.readyState);
+			// 对ajax状态码进行判断 如果状态码的值为4就代表数据已经接收完成了
+			if (xhr.readyState === 4) {
+				if (xhr.status >= 200 && xhr.status < 300) {
+					// 响应 成功 执行
+					resolve(xhr.response);
+				} else {
+					// 响应 失败 执行
+					console.error(xhr.status);
+				}
+			}
+		}
+
+		xhr.send();
+	</script>
+</body>
+
+</html>

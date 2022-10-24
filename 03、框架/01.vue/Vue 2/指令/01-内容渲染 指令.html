@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 知识点：内容渲染指令
+
+    指令：vue 提供的模板语法，用于辅助开发 渲染页面的基本结构
+
+    内容渲染指令：渲染 DOM 元素的文本内容
+
+  -->
+
+  <div id="app">
+    <!-- 方法一：v-text
+      特性：会覆盖原本 DOM 结构的内容
+    -->
+    <p v-text="username"></p>  <!-- zhangsan -->
+    <p v-text="gender">性别：</p>  <!-- 女 -->
+
+    <hr>
+
+    <!-- 方法二：插值表达式（推荐）
+      特性：
+        1、不会覆盖原本 DOM 结构的内容
+        2、允许使用 JS 代码，变量会去 data 中查找
+    -->
+      
+    <p>姓名：{{ username }}</p>
+    <p>性别：{{ gender }}</p>
+
+    <p>运算：{{ num + 6 }}</p>
+    <p>{{ ok ? 'YES' : 'NO' }}</p>
+
+    <div>方法：{{ tips }} 反转的结果是：{{ tips.split('').reverse().join('') }}</div>
+
+    <hr>
+
+    <!-- 方法三：v-html
+      特性：会解析 HTML 标签
+    -->
+    <div v-html="info"></div>
+  </div>
+
+  <script src="sucai/vue-2.6.12.js"></script>
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        username: 'zhangsan',
+        gender: '女',
+        info: '<h4 style="color: red; font-weight: bold;">欢迎大家来学习 vue.js</h4>',
+        num: 6,
+        tips: '123456',
+      }
+    })
+  </script>
+</body>
+
+</html>

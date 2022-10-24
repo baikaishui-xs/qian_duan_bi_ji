@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+	<script src="/js/jquery.min.js"></script>
+
+</head>
+<body>
+    <button id="btn">发送请求</button>
+    <script>
+        // 知识点：Jquery 中的 $.ajax 方法
+
+        // 方法：$.ajax(配置 Ajax 请求对象)
+        // 作用：发送 Ajax 请求
+        // 解决：原生 Ajax 发送请求繁琐的问题
+
+        // 创建 JSON 对象格式的参数
+        var params = {name: 'wangwu', age: 18}
+
+        $('#btn').on('click', function () {
+            $.ajax({
+
+                // 请求方式
+                type: 'post',
+
+                // 请求地址
+                    // 特性：内部自动拼接成完整的请求地址 http://localhost:3000/base
+                url: '/base',
+
+                // 请求参数
+                    // 将 JSON对象 转换为 JSON字符串
+                data: JSON.stringify(params),  // {"name":"wangwu","age":300}
+
+                // 规定客户端传递参数的格式类型
+                // application/x-www-form-urlencoded（默认值）：参数名=参数值 以&分隔 字符串 如：name=zhangsan&age=100
+                // application/json（推荐）：JSON 格式
+                contentType: 'application/x-www-form-urlencoded',
+
+                // 允许请求发送之前做一些事情
+                    // 作用：
+                        // 1、对请求参数值进行验证，验证通过则允许发送请求
+                        // 2、请求等待图片
+                beforeSend: function () {
+                    alert('请求即将发送');
+                    // 如果验证不通过则不允许发送请求
+                    // return false
+                },
+
+                // 请求成功，服务端返回数据后调用
+                    // response：存储了服务器端返回的数据
+                    // 特性：内部会根据 contentType 设置的参数格式类型，自动将响应的数据转换为对应的类型。无需手动转换
+                success: function (response) {
+                    console.log(response);
+                },
+
+                // 请求失败 后调用
+                // xhr：Ajax 对象
+                error: function (xhr) {
+                    console.log(xhr)
+                }
+            });
+        });
+    </script>
+</body>
+</html>

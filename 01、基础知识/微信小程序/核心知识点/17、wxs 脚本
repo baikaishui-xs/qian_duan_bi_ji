@@ -1,0 +1,70 @@
+知识点：wxs 脚本
+
+作用：过滤器（处理数据）。wxml 中无法调用在页面 .js 中定义的函数，但是 wxml 中可以调用 wxs 中定义的函数
+
+特性：
+  （1）wxs 和 javaScript 的区别
+    说明：wxs 和 javaScript 是完全不同的两种语言，为了方便学习，wxs 在设计时借鉴了 js 的语法
+
+    wxs 不支持 ES6 及以上的语法形式
+      如：let、const、解构赋值、展开运算符、箭头函数、对象属性简写
+  
+  （2）常配合 Mustache 语法使用
+    
+  （3）不能调用 js 中定义的函数
+
+  （4）不能调用小程序提供的 API
+
+  （5）性能好。在 ios 设备上，小程序内的 wxs 会比 js 代码块 2~20 倍
+
+内嵌 wxs 脚本
+  编写在 <wxs> 标签内
+
+  特性：<wxs> 标签必须使用 module 属性，用来指定当前 wxs 的模块名称，方便在其它 wxml 中访问模块中的成员
+
+  使用步骤：
+    （1）定义 wxs 函数
+      <wxs module="m1">
+        向外共享 toUpper 成员
+
+        // 功能：将文本转为大写 zs -> ZS
+        module.exports.toUpper = function(str) {
+          return str.toUpperCase()
+        }
+      </wxs>
+
+    （2）使用 wxs 函数
+      <view>{{m1.toUpper(username)}}</view>
+
+外联 wxs 脚本
+  编写在 .wxs 文件内
+
+  使用步骤：
+    （1）定义 wxs 函数
+      function toUpper(str) {
+        return str.toUpperCase()
+      }
+
+      // 向外共享 toLower 成员
+      module.exports = {
+        toUpper: toUpper
+      }
+
+    （2）导入外联 wxs 脚本，并命名
+      <wxs src="../../utils/toUpper.wxs" module="m1"></wxs>
+
+    （3）使用 wxs 函数
+      <view>{{m1.toUpper(username)}}</view>
+
+过滤器函数
+  // 格式化手机号。（旧：15530710686）（新：155-3071-0686）
+  function splitPhone(str) {
+    if(str.length !== 11) return str
+
+    var arr = str.split('')
+
+    arr.splice(3, 0, '-')
+    arr.splice(8, 0, '-')
+
+    return arr.join('')
+  }

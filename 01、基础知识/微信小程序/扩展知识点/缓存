@@ -1,0 +1,60 @@
+知识点：数据缓存
+
+文档：https://developers.weixin.qq.com/miniprogram/dev/api/storage/wx.setStorageSync.html
+
+作用：
+  （1）提高页面加载速度
+  （2）减轻服务器请求压力。文件缓存后不需要再次请求，只需要请求需要更新的文件
+
+执行机制：
+  无缓存：浏览器请求 → 无缓存 → 向服务器发送请求 → 请求响应缓存协商 → 呈现
+  有缓存：浏览器请求 → 有缓存 → 查看缓存是否过期 → 没有过期则从缓存中读取 → 呈现
+
+使用场景：
+  （1）频繁访问和修改的数据
+  （2）存储 Token
+  （3）存储用户信息
+  （4）高并发、高性能
+
+查看缓存数据：终端 → Storage
+
+数据缓存 API
+  特性：默认都为异步，在后面加上 Sync 则为同步
+    如：wx.setStorageSync(Object)
+
+  （1）wx.setStorage(Object)
+    作用：存储缓存
+    特性：
+      1、除非用户主动删除或因存储空间原因被系统清理，否则数据都一直可用
+      2、单个 key 允许存储的最大数据长度为 1MB，所有数据存储上限为 10MB
+    例：
+      wx.setStorage({
+        key: 'name',
+        data: 'zcr'
+      })
+
+  （2）wx.getStorage(Object)
+    作用：获取缓存
+    例：
+      wx.getStorage({
+        key: 'name',
+        // 成功时调用。res：结果
+        success: function (res) {
+          console.log(res)
+        }
+      })
+
+  （3）wx.removeStorage(Object) 
+    作用：删除指定缓存
+    例：
+      wx.removerStorage({
+        key: 'key2',
+        success: function (res) {
+          console.log(res, "removeStorage")
+        }
+      })
+
+  （4）wx.clearStorage()
+    作用：清除缓存
+    例：
+      wx.clearStorage()

@@ -1,0 +1,24 @@
+知识点：uni-api
+
+文档：https://uniapp.dcloud.io/api/README
+
+作用：解决原生微信小程序的 api 不支持 promise 的问题
+
+使用方式：uni.【api 名】
+
+例子：
+  原生微信小程序 api：
+    wx.request({
+      url:"http://157.122.54.189:9088/image/v3/homepage/vertival",
+      success(res) {
+        console.log(res)
+      }
+    })
+
+  uni-api：
+    uni.request({
+      url:"http://157.122.54.189:9088/image/v3/homepage/vertival",
+    })
+    .then(res => {
+      console.log(res)
+    })

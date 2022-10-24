@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="sucai/bootstrap.css">
+</head>
+
+<body>
+    <!-- 知识点：列表渲染 指令
+        作用：循环渲染列表结构
+        语法：v-for="(item, index) in 循环的对象"
+            item：循环项    index：索引号
+        特性：在同一 DOM元素 中，也可以访问 v-for 的 循环项 和 索引
+        :key 作用：保证现有状态的列表被正确更新的前提下，提升渲染的性能
+        注意：
+            1、只要用到了 v-for指令 就要绑定 :key 属性，值必须为 字符串 或 数字类型，且必须具有唯一性，否则会报错
+            2、不能使用 索引 做为 :key 的值，因为添加数据时，会打乱索引 
+    -->
+  <div id="app">
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <th>索引</th>
+        <th>Id</th>
+        <th>姓名</th>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in list" :title="item.name + index" :key="item.id">
+          <td>{{ index }}</td>
+          <td>{{ item.id }}</td>
+          <td>{{ item.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="sucai/vue-2.6.12.js"></script>
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        list: [
+          { id: 1, name: '张三' },
+          { id: 2, name: '李四' },
+          { id: 3, name: '王五' },
+          { id: 4, name: '张三' },
+        ]
+      }
+    })
+  </script>
+</body>
+
+</html>

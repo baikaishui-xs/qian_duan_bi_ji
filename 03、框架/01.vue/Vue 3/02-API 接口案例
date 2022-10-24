@@ -1,0 +1,117 @@
+知识点：API 接口案例
+
+需求：对外提供用户列表的 API 接口服务
+
+使用到的的技术：
+  1、第三方包 Express 和 mysql2
+  2、ES6 模块化
+  3、Promise
+  4、async/await 异步函数
+
+步骤：
+  （1）安装第三方包
+    npm install express@4.17.1 mysql2@2.2.5
+
+  （2）启用 ES6 模块化支持
+    在 package.json 中声明 "type": "module"
+  
+  -- 项目/app.js
+    （3）创建基本的服务器
+      import express from 'express'
+      import musql from 'mysql2'
+
+      const app = express()
+
+      app.listen(80, () => {
+        console.log('server running at http://127.0.0.1')
+      })
+
+  -- 项目/db/index.js
+    （4）创建 db 数据库操作模块
+      const pool = mysql.createPool({  // 返回值：数据库对象
+        host: '127.0.0.1',      // 数据库 地址
+        port: 3306,             // 数据库 端口号
+        database: 'my_db_01',   // 数据库 名称
+        user: 'root',           // 数据库 用户名
+        passwored: 'admin123',  // 数据库 密码
+      })
+
+      // 默认导出一个支持 Promise API 的 数据库对象
+      export default pool.promise()
+    
+  -- 项目/controller/user_ctrl.js
+    （5）创建 user_ctrl 业务模块
+    import db from '../db/index.js'
+
+    export async function getAllUser(req, res) {
+
+      // db.query('查询用户信息的 sql语句') 的返回值为 Promise 实例对象，使用 await 修饰完毕后，db.query() 的返回值就变成一个数组了
+      // rows：查询的结果
+
+      // 问题：当这个 sql 语句报错时，会导致程序的崩溃
+      // 解决方法：使用 try 将可能产生错误的代码包裹起来，如果代码发送错误，会跳转到 catch 中进行错误处理
+
+      try {
+        const [rows] = await db.query('select id, username, nickname from ev_users')
+        res.send({
+          status: 0,  // 告诉客户端成功还是失败（0：成功）（1：失败）
+          message: '获取用户列表数据成功!',
+          data: rows,
+        })
+      } catch (e) {
+        // e：错误对象
+        res.send({ 
+          status: 1,
+          message: '获取用户列表数据失败',
+          desc: e.message
+        })
+      }
+      
+      
+    }
+
+  -- 项目/router/user_router.js
+  （6）创建 user_router 路由模块
+  import express from 'express'
+  import { getAllUser } from '../controller/user_ctrl.js'
+
+  // 创建 路由对象
+  const router = new express.Router()
+  // 创建 路由规则
+  router.get('/user', getAllUser)
+
+  export default router
+
+  -- 项目/app.js
+    （7）挂载 路由规则
+
+    import userRouter from './router/user_router.js'
+
+    app.use('/api', userRouter)
+
+测试：
+  1、启动服务器 nodemon app.js
+  2、打开 Postman，新建测试请求，并发起 GET 请求：http://127.0.0.1/api/user
+  
+  服务器返回：
+    {
+      "status": 0,
+      "message": "获取用户列表数据成功",
+      "data": [
+        {
+          "id": 1,
+          "username": "admin1",
+          "nickname": null
+        },
+        {
+          "id": 2,
+          "username": "admin2",
+          "nickname": "abc"
+        }
+        {
+          "id": 3,
+          "username": "admin3",
+          "nickname": null
+        }
+      ]
+    }

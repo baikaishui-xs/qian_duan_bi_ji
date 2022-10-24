@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">点我发送请求</button>
+    <script>
+    // 功能：点击按钮时 向非同源服务器发送请求
+
+        // （2）在全局作用域中定义一个函数，用于接收非同源服务器的响应数据
+        function fn1 (data) {
+            // console.log('客户端的 fn1 函数背调用了');  // 测试
+            console.log(data);  // {name: 张三}
+        }
+    </script>
+
+    <!-- （3）详见 s2 里的 app.js 中的 /test 路由中 -->
+
+    <script>
+        // （1）向非同源服务器端发送请求
+        var btn = document.getElementById('btn');
+		btn.onclick = function () {
+			var script = document.createElement('script');
+			script.src = 'http://localhost:3001/test';
+            document.body.appendChild(script);
+            // 当 script 标签加载完成，删除 script 标签
+            // script.onload：当 script 加载完成后调用
+			script.onload = function () {
+				document.body.removeChild(script);
+			}
+		}
+
+    </script>
+</body>
+</html>

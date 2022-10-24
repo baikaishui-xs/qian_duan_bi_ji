@@ -1,0 +1,51 @@
+知识点：组件生命周期
+
+文档：https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/lifetimes.html
+
+概念：组件从 启动 → 运行 → 销毁 的过程
+
+生命周期函数（-- 组件.vue）
+
+  component({
+
+    // 生命周期
+    lifetimes: {
+
+      （1）created（常用）
+        触发：组件实例创建完成后 触发
+        作用：为组件 this 添加一些自定义属性字段
+        created: function () {
+          console.log(1)
+        }
+
+      （2）attached（常用）
+        触发：组件完全初始化完成，进入页面节点树后，同时 data 数据初始化完毕
+        作用：可以使用 data 处理数据、发起网络请求
+
+      （3）ready
+        触发：组件在视图层布局完成后 触发
+
+      （4）moved
+        触发：组件实例被移动到节点树另一个位置后 触发
+
+      （5）detached（常用）
+        触发：组件离开页面节点树后 触发
+        作用：销毁事件监听
+
+      （6）error
+        触发：组件方法抛出错误时 触发
+
+      -- 以下了解即可 --
+
+      （7）show
+        触发：组件所在的页面被展示时 触发
+
+      （8）hide
+        触发：组件所在的页面被隐藏时 触发
+
+      （9）resize
+        触发：组件所在的页面尺寸变化时 触发
+
+    }
+
+  })

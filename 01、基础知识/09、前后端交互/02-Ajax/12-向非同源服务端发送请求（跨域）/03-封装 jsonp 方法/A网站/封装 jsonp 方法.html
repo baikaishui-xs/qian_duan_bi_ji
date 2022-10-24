@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="btn1">点我发送请求</button>
+    <button id="btn2">点我发送请求</button>
+    <script type="text/javascript">
+      import jsonp from 'jsonp' // （1）引入 jsonp
+
+      // 知识点：封装 jsonp 方法
+      // 作用：
+      // 1、使 jsonp 语法更清晰
+      // 2、解决 在全局作用域中定义函数，导致破坏 jsonp 的封装性 的问题
+      // 3、解决 无法一眼认出哪个请求和哪个函数是关联的 的问题
+      // 4、解决 创建多个请求时，需要为每个函数起一个名字 导致命名繁琐 的问题
+      // 特性：客户端 和 服务端 同时配置
+      // 下载：npm i jsonp --save-dev
+
+      // 使用步骤：
+      // （1）引入 jsonp
+      // （2）定义接口地址
+      var btn1 = document.getElementById('btn1')
+      var btn2 = document.getElementById('btn2')
+      btn1.onclick = function () {
+        jsonp({
+          url: 'http://localhost:3001/better', // （2）定义接口地址
+          // data 对象用于存储向服务端传递的请求参数
+          data: {
+            name: 'lisi',
+            age: 30
+          },
+          // success 方法用于处理服务器端返回的结果
+          success: function (data) {
+            console.log(123)
+            console.log(data)
+          }
+        })
+      }
+
+      btn2.onclick = function () {
+        jsonp({
+          url: 'http://localhost:3001/better',
+          success: function (data) {
+            console.log(456789)
+            console.log(data)
+          }
+        })
+      }
+
+      // jsonp 请求为 get 请求方式
+      function jsonp(options) {
+        var script = document.createElement('script')
+
+        // 拼接字符串
+        var params = ''
+        for (var attr in options.data) {
+          params += '&' + attr + '=' + options.data[attr]
+        }
+
+        // 随机生成函数名
+        var fnName = 'myJsonp' + Math.random().toString().replace('.', '') // myJsonp0124741
+        // 它已经不是一个全局函数了
+        // 将该函数部位全局函数
+        window[fnName] = options.success
+        // 为script标签添加src属性，并将其它参数拼接到请求地址中
+        script.src = options.url + '?callback=' + fnName + params
+        // 将script标签追加到页面中
+        document.body.appendChild(script)
+        // 为script标签添加onload事件
+        script.onload = function () {
+          document.body.removeChild(script)
+        }
+      }
+    </script>
+  </body>
+</html>

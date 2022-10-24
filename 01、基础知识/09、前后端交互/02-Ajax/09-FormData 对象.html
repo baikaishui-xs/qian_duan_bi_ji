@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+    <!-- （1）创建 form 表单
+        - 无需设置 请求地址
+        - 无需设置 请求方式
+        - 请求方式 和 请求地址 都在在 Ajax 请求对象中设置
+    -->
+	<form id="form">
+		<input type="text" name="username">
+        <input type="password" name="password">
+
+        <!-- 注意：这里的 type 不能是 submite，因为 submite 点击时会触发默认的表单提交行为 -->
+        <input type="button" id="btn" value="提交">
+        
+	</form>
+    <script type="text/javascript">
+    // 知识点：FormData 对象
+    // 特性：FormData 对象 不能用于 get 请求，因为 FormData 对象 需要放在 xhr.send() 方法中，而 get 请求方式只能放在请求地址的后面
+    // 解决：
+        // 1、当 Ajax 请求需要传递的参数比较多时，导致 参数值的获取和参数格式的拼接繁琐的问题
+            // 如：注册用户功能，需要填写用户名、密码、确认密码、性别年龄、工作年限、爱好、邮箱地址 以及其它信息，需要获取每个表单控件，以及表单控件的值，取到的值还要按照指定格式进行字符串拼接，非常的繁琐
+            // 解决方法：将表单转换成表单对象，表单对象会自动将表单中的数据拼接成请求参数的格式，并提交给服务器端
+            // 使用步骤：（1）（2）（3）（4）
+
+        // 2、普通的 Ajax 是不能向服务器端传递二进制文件 的问题  如：图片、视频的传递
+            // 解决方法：FormData 对象允许异步上传二进制文件
+
+        var btn = document.getElementById('btn');
+        
+        // （2）获取 form 表单
+        var form = document.getElementById('form');
+		btn.onclick = function () {
+
+            // （3）将 form 表单转换为表单对象
+            var formData = new FormData(form);
+
+            var xhr = new XMLHttpRequest();
+            
+            xhr.open('post', 'http://localhost:3000/formData');
+            
+            // （4）提交表单对象
+            xhr.send(formData);
+            
+			xhr.onload = function () {
+				if (xhr.status == 200) {
+					console.log(xhr.responseText);
+				}
+			}
+		}
+	</script>
+</body>
+</html>
+
+<!--  app.js（服务器端） -->
+<script>
+    const express = require('express');
+    const path = require('path');
+    
+    // （1）引入 formidable 模块
+        // 特性：服务器端 bodyParser 模块不能解析 formData 对象表单数据，需要使用 formidable 模块进行解析
+    const formidable = require('formidable');
+
+    const app = express();
+
+    app.post('/formData', (req, res) => {
+
+        // （2）创建 formidable 表单解析对象
+        const form = new formidable.IncomingForm();
+
+        // （3）解析客户端传递过来的 FormData对象
+        // 方法：form.parse(请求对象, 回调函数(错误对象, 表单中的请求参数, 与文件上传相关的信息));
+        form.parse(req, (err, fields, files) => {
+            res.send(fields);
+        });
+    });
+
+    // 查看：控制台 → Network → formData（请求文件） → Headers → form Data 中可以查看 formData 请求的参数
+
+    // 实现文件上传的路由
+    app.post('/upload', (req, res) => {
+        // 创建formidable表单解析对象
+        const form = new formidable.IncomingForm();
+        // 设置客户端上传文件的存储路径
+        form.uploadDir = path.join(__dirname, 'public', 'uploads');
+        // 保留上传文件的后缀名字
+        form.keepExtensions = true;
+        // 解析客户端传递过来的FormData对象
+        form.parse(req, (err, fields, files) => {
+            // 将客户端传递过来的文件地址响应到客户端
+            res.send({
+                path: files.attrName.path.split('public')[1]
+            });
+        });
+    });
+
+    // 监听端口
+    app.listen(3000);
+    // 控制台提示输出
+    console.log('服务器启动成功');
+</script>

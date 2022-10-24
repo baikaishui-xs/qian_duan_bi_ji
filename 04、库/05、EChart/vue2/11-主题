@@ -1,0 +1,78 @@
+知识点：主题
+
+内置主题
+  特性：默认内置了两套主题 light、dark
+  语法：echarts.init(dom节点, 内置主题)
+  使用方法：在 echarts.init 第二个参数中使用内置主题
+
+自定义主题
+  使用步骤：
+    （1）在主题编辑器中编辑主题  // https://echarts.apache.org/zh/download-theme.html
+    （2）下载 js 版本的主题到 theme 目录中（该目录自己创建）
+    （3）引入主题
+    （4）在 echarts.init 第二个参数中使用自定义主题  // 特性：主题的名称可以在 主题.js 中的 echarts.registerTheme 中的第一个参数里修改
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="lib/echarts.min.js"></script>
+  <script src="theme/itcast.js"></script>  // （3）引入主题
+</head>
+
+<body>
+  <div style="width: 600px;height:400px"></div>
+  <script>
+
+    // var mCharts = echarts.init(document.querySelector("div"), 'dark')  // 设置内置主题
+    var mCharts = echarts.init(document.querySelector("div"), 'itcast')  // （4）在 echarts.init 第二个参数中使用自定义主题
+
+    var xDataArr = ['张三', '李四', '王五', '闰土', '小明', '茅台', '二妞', '大强']
+    var yDataArr = [88, 92, 63, 77, 94, 80, 72, 86]
+    var option = {
+      xAxis: {
+        type: 'category',
+        data: xDataArr
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          type: 'bar',
+          data: yDataArr,
+          markPoint: {
+            data: [
+              {
+                type: 'max', name: '最大值'
+              },
+              {
+                type: 'min', name: '最小值'
+              }
+            ]
+          },
+          markLine: {
+            data: [
+              {
+                type: 'average', name: '平均值'
+              }
+            ]
+          },
+          label: {
+            show: true,
+            rotate: 60
+          },
+          barWidth: '30%'
+        }
+      ]
+    };
+    mCharts.setOption(option)
+  </script>
+</body>
+
+</html>

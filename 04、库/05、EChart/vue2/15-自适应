@@ -1,0 +1,73 @@
+知识点：自适应
+
+特性：根据容器大小的变化而变化
+
+使用步骤：
+  （1）监听窗口大小事件（窗口大小发送变化时触发）
+  （2）调用 mCharts.resize 方法
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="lib/echarts.min.js"></script>
+</head>
+
+<body>
+  <div style="height:400px;border: 1px solid red"></div>
+  <script>
+    var mCharts = echarts.init(document.querySelector("div"))
+    var xDataArr = ['张三', '李四', '王五', '闰土', '小明', '茅台', '二妞', '大强']
+    var yDataArr = [88, 92, 63, 77, 94, 80, 72, 86]
+    var option = {
+      xAxis: {
+        type: 'category',
+        data: xDataArr
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          type: 'bar',
+          data: yDataArr,
+          markPoint: {
+            data: [
+              {
+                type: 'max', name: '最大值'
+              },
+              {
+                type: 'min', name: '最小值'
+              }
+            ]
+          },
+          markLine: {
+            data: [
+              {
+                type: 'average', name: '平均值'
+              }
+            ]
+          },
+          label: {
+            show: true,
+            rotate: 60
+          },
+          barWidth: '30%'
+        }
+      ]
+    }
+    mCharts.setOption(option)
+    
+    // window.onresize = function(){  // （1）监听窗口大小事件
+      // mCharts.resize()  // （2）调用 mCharts.resize 方法
+    // }
+    window.onresize = mCharts.resize  // 简写（特性：事件触发时，调用方法）
+
+  </script>
+</body>
+
+</html>

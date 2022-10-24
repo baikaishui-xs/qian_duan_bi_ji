@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="form">
+        <input type="text" name="username">
+        <input type="password" name="password">
+        <input type="button" id="btn" value="提交">
+    </form>
+    <script type="text/javascript">
+        // 知识点：FormData 对象 中的实例方法
+
+        var btn = document.getElementById('btn');
+        var form = document.getElementById('form');
+        btn.onclick = function () {
+            var formData = new FormData(form);
+
+            // （1）get('属性名') 
+            // 作用：获取 表单对象属性的值（获取 用户在表单中输入的值）
+            console.log(formData.get('username'));
+
+            // （2）set('属性名', '属性值') 
+            // 作用：设置 表单对象属性的值（设置 用户在表单中输入的值）
+            // 特性：
+            // 1、设置的表单属性不存在时，自动创建该属性
+            // 2、在属性已存在的情况下，会 覆盖 原有属性的值
+            formData.set('username', 'itcast');
+
+            // （3）delete('属性名') 
+            // 作用：删除 表单对象属性的值（删除 用户在表单中输入的值）
+            // 使用场景：在用户注册时要求输入两次密码，但在向服务器提交密码时，只需要提交一次密码，所以在向服务器提交之前，会将这个数据进行删除
+            formData.delete('password');
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', 'http://localhost:3000/formData');
+            xhr.send(formData);
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    console.log(xhr.responseText);
+                }
+            }
+
+            // （4）f.append('属性名', '属性值')
+            // 作用：向表单对象中 追加值
+            // 特性：在属性已存在的情况下，会 保留 原有属性值
+            // 注意：在服务器端，没有经过特殊设置，默认接收最后一个相同属性的值
+
+            // 创建空的表单对象
+            var f = new FormData();
+            f.append('sex', '男');
+            console.log(f.get('sex'));
+
+            // 查看：控制台 → Network → formData（请求文件） → Headers → form Data 中可以查看 formData 请求的参数
+
+        }
+    </script>
+</body>
+
+</html>

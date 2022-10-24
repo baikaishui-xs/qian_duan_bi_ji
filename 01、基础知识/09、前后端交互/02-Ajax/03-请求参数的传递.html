@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width initial-scale=1 maximum-scale=1 minimum-scale=1 user-scalable=no">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>
+        <input type="text" id="username">
+    </p>
+    <p>
+        <input type="text" id="age">
+    </p>
+    <p>
+        <input type="button" value="提交" id="btn">
+    </p>
+    <script>
+        // 知识点：请求参数的传递
+
+        // 传统网站：无论是 get 还是 post 都是通过 表单 来传递请求参数的
+        /* 
+            <form method="get" action="http://www.example.com">
+                <input type="text" name="username"/>
+                <input type="password" name="password">
+            </form>
+
+            gat  通过请求地址传递：http://www.example.com?username=zhangsan&password=123456
+            post 通过请求体传递
+            格式：参数名称 = 参数值&参数名称 = 参数值...
+        */
+
+        // Ajax：无论是 get 还是 post 都是通过表单 或 表单控件 来传递请求参数的
+
+        var btn = document.getElementById('btn');
+        var username = document.getElementById('username');
+        var age = document.getElementById('age');
+
+        // get 传递方式：
+        btn.onclick = function () {
+            var xhr = new XMLHttpRequest();
+            // 获取用户在文本框中输入的值
+            var nameValue = username.value;
+            var ageValue = age.value;
+            var params = 'username=' + nameValue + '&age=' + ageValue;
+            xhr.open('get', 'http://localhost:3000/get?' + params);
+            xhr.send();
+            xhr.onload = function () {
+                console.log(xhr.responseText)
+            }
+        }
+
+        // post 传递方式：
+        btn.onclick = function () {
+            var xhr = new XMLHttpRequest();
+            // 获取用户在文本框中输入的值
+            var nameValue = username.value;
+            var ageValue = age.value;
+            var params = 'username=' + nameValue + '&age=' + ageValue;
+            xhr.open('post', 'http://localhost:3000/post');
+
+            // post 请求必须设置请求内容的类型
+            // 方法：xhr.setRequestHeader('报文属性名称', '报文属性值');
+            // 作用：设置请求报文中的报文头信息
+            // 请求参数的格式：
+            // 1、application/x-www-form-urlencoded：字符串格式     如：sername=zhangsan&password=123456
+            // 2、application/json：json 格式   如： {name: 'zhangsan', age: '20', sex: '男'}
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            // send 内部自动把请求参数放到请求体
+            xhr.send(params);
+
+            xhr.onload = function () {
+                console.log(xhr.responseText)
+            }
+        }
+
+        // 传递 json 格式的请求参数
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', 'http://localhost:3000/json');  // 演示：app.js
+
+        // （1） 设置请求内容的类型
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        // （2）发送 json 数据
+        // 方法：JSON.stringify(json数据)
+        // 作用：将 json 对象转换为 json 字符串
+        xhr.send(JSON.stringify({ name: 'lisi', age: 50 }));
+
+        xhr.onload = function () {
+            console.log(xhr.responseText)
+        }
+
+                    // 服务器端
+                    // （3）设置服务器，允许接收 json 格式的数据
+                    // 方法： app.use(bodyParser.json())
+
+    </script>
+</body>
+
+</html>
