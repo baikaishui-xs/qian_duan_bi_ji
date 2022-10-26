@@ -13,12 +13,19 @@
   ## 安装 MySQL Workbench
   使用存放在素材文件夹中的 `mysql-workbench-community-8.0.19-macos-x86_64.dmg` 安装包进行安装
 
+  # 【BUG】无法打开，闪退
+  **说明：** 无法使用 brew 安装，因为 brew 已经删除了 python2 版本
+
+  **解决方式：**
+  1、手动打开软件：`/Applications/MySQLWorkbench.app/Contents/MacOS/MySQLWorkbench`。可以看到命令行提示缺少 python@2.7
+  2、安装 python@2.7：官网的安装包可能会安装失败，请用这个 `https://blog.csdn.net/u013754950/article/details/125786484`
+  
 # Windows 安装
   ## 安装 MySQL Server、MySQL Workbench
   使用存放在素材文件夹中的 `mysql-installer-community-8.0.19.0.msi` 安装包进行安装
 
   1、Choosing a Setup Type 选项卡：默认。next
-  2、Check Requirements 选项卡：Execute（安装依赖项。电脑需要联网）
+  2、Check Requirements 选项卡：Execute（安装x依赖项。电脑需要联网）
   - Microsoft Visual C++2015-2019 ... 弹框：默认
   - Microsoft Visual Studio Tools for Office Runtime 2010... 弹框：（1、勾选 I have read and accept the license terms）（2、Install）
   - 依赖表中可能有些没打勾，但没关系，继续 Next
