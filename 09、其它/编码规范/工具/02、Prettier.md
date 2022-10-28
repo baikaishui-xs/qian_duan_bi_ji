@@ -43,9 +43,13 @@
   ### 使用步骤
   #### 1、配置 prettier 脚本
   -- package.json
-  ```json
+  ```
   "scripts": {
+
+    -- 增
     "prettier": "prettier --write ."
+    --
+    
   },
   ```
 

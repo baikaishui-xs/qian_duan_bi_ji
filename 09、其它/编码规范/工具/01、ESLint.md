@@ -25,6 +25,7 @@
   ```
 
   ### （2）Vue3
+  -- .eslintrc.js
   ```js
   extends: [
     ...

@@ -20,9 +20,11 @@
   ![](images/2022-10-24-15-35-51.png)
 
   **DataType 数据类型：**
-  1、INT 整数
-  2、VARCHAR(最大长度) 字符串
-  3、TINYINT(0：true，1：false) 布尔值
+  1、INT：整数
+  2、VARCHAR(最大长度) ：有上限字符串
+  3、TEXT：没有上限的字符串
+  4、TINYINT(0：true，1：false) ：布尔值
+
 
   **字段的特殊标识：**
   1、PK：主键。唯一标识

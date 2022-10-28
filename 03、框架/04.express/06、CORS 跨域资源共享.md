@@ -4,16 +4,17 @@
 
 # 使用步骤
   ## 1、安装 cors 第三方中间件包
-  `npm install cors`
+  `npm install cors@2.8.5`
 
   ## 2、导入
   ```js
-  const Cors = require('cors')
+  // CORS 跨域
+  const cors = require('cors') 
   ```
 
   ## 3、注册
   ```js
-  app.use(Cors())
+  app.use(cors())
   ```
 
 # CORS 响应头

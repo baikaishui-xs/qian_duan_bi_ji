@@ -1,12 +1,13 @@
-# 1、安装 express-session 中间件
+# 使用方式
+  ## 1、安装 express-session 中间件
   `npm install express-session`
 
-# 2、导入
+  ## 2、导入
   ```js
   const Session = require('express-session')
   ```
 
-# 3、注册
+  ## 3、注册
   ```js
   app.use(Session({
     secret: 'keyboard cat',
@@ -15,7 +16,7 @@
   }))
   ```
 
-# 4、向 session 中存数据
+  ## 4、向 session 中存数据
   **说明：** 只有安装了 express-session 中间件才可以操作 req.session 对象
 
   ```js
@@ -34,11 +35,11 @@
   })
   ```
 
-# 5、从 session 中读数据
+  ## 5、从 session 中读数据
   ```js
   // 获取用户姓名
   app.get('/api/username', (req, res) => {
-    // 判断用户是否登录
+    // 用户身份验证
     if (!req.session.isLogin) {
       return res.send({ status: 1, msg: 'fail' })
     }
@@ -46,7 +47,7 @@
   })
   ```
 
-# 6、清空 session
+  ## 6、清空 session
   ```js
   // 退出登录
   app.post('/api/logout', (req, res) => {

@@ -6,7 +6,7 @@
 
 # 使用步骤
   ## 1、安装 commitlint
-  npm i @commitlint/config-conventional@17.0.3 @commitlint/cli@17.0.3 -D
+  `npm i @commitlint/config-conventional@17.0.3 @commitlint/cli@17.0.3 -D`
 
   ## 2、配置 commitlint
   -- 项目根目录/新建 commitlint.config.js
@@ -19,4 +19,4 @@
   ## 3、配置 husky
   **说明：** 提交代码到远程仓库前使用 commitlint 进行提交信息验证
   
-  npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
+  `npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"`

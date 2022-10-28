@@ -2,16 +2,20 @@
 
 # 使用步骤
   # 安装 Commitizen
-  npm install commitizen@4.2.5 -D
+  `npm install commitizen@4.2.5 -D`
 
   # 自动配置 Commitizen
-  npx commitizen init cz-conventional-changelog --save-dev --save-exact
+  `npx commitizen init cz-conventional-changelog --save-dev --save-exact`
 
   # 配置脚本命令
   -- package.json
-  ```js
+  ```
   "scripts": {
+
+    -- 增
     "commit": "cz"
+    --
+    
   }
   ```
 
