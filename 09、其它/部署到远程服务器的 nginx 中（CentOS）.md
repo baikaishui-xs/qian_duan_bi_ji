@@ -122,7 +122,9 @@
   `sudo apt-get update`
 
 # 在远程服务器中 配置环境、安装包
-  ## 1、安装 nginx（轻量级 web 服务器）
+  ## 1、安装 nginx（轻量级 web 服务器）（静态资源服务器）
+  **说明：** 前端打包后的 dist 文件需要放在 web 服务器中才可以运行
+
   `sudo apt-get install nginx`
 
   ## 2、安装 nodejs 环境

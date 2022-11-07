@@ -14,29 +14,28 @@
 # 一、基础用法
   ```html
   <el-tabs type="border-card" v-model="currentTab" stretch >
+    <!-- 账号登录 tab -->
+    <el-tab-pane name="XXX" label="账号登录">账号登录</el-tab-pane>
 
-    <!-- 账号登录 tabs -->
-    <el-tab-pane name="account" label="账号登录">账号登录</el-tab-pane>
-
-    <!-- 手机登录 tabs -->
-    <el-tab-pane name="phone">
+    <!-- 手机登录 tab -->
+    <el-tab-pane name="XXX1">
       <!-- 自定义 label -->
       <template #label>
         <span class="custom-tabs-label">
           <el-icon :size="20">
             <Avatar />
           </el-icon>
-          <span class="text">账号登录</span>
+          <span class="text">手机登录</span>
         </span>
       </template>
       内容
     </el-tab-pane>
-    
   </el-tabs>
   ```
 
-  ```js
-  const currentTab = ref<string>()
+  ```ts
+  // 当前标签页
+  const currentTab = ref<string>('XXX')
 
   return { currentTab }
   ```

@@ -12,6 +12,10 @@
   Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
   ```
 
-  **原因：** 调用了两次 res.send()
+  **原因：**
+  1、调用了两次 res.send()
+  2、db.query 写在同级，导致调用了两次 res.send()
 
-  **解决方式：** 删掉一个 res.send()
+  **解决方式：**
+  1、删掉一个 res.send()
+  2、db.query 写成嵌套形式

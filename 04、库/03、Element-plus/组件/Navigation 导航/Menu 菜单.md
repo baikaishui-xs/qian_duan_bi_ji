@@ -13,8 +13,8 @@
 # 基础用法
   ```html
   <el-menu class="el-menu-vertical-demo" :collapse="isExpandIcon" active-text-color="#ffd04b" background-color="#AA292D" text-color="#fff" :default-active="storeDefaultActive" :collapse-transition="false">
-    <el-menu-item index="0" @click="routerJump('/main/home')">首页</el-menu-item>
-    <el-sub-menu :index="item.id" v-for="item in menuTree" :key="item.id">
+    <el-menu-item index="0" @click="routerJump(staticMenuTree[0])">{{staticMenuTree[0].name}}</el-menu-item>
+    <el-sub-menu :index="item.id" v-for="item in dynamicMenuTree" :key="item.id">
       <template #title>
         <component :is="item.icon" style="width: 16px; height:16px; margin-left: 4px;" />
 
@@ -32,54 +32,74 @@
 
   ```ts
   setup() {
-    const menuTree = [
+    // 静态菜单树
+    const staticMenuTree = [
+      {
+        id: '1',
+        name: '首页',
+        icon: 'GoodsFilled',
+        url: '/main/home',
+        children: null
+      }
+    ]
+    // 动态菜单树
+    const dynamicMenuTree = [
       {
         id: '2',
-        name: '系统总览',
-        icon: 'monitor',
+        name: '商品管理',
+        icon: 'GoodsFilled',
         children: [
           {
             id: '2-1',
-            name: '核心技术',
-            icon: 'monitor',
+            name: '商品分类',
+            icon: 'Grid',
+            url: '/main/goodsCategory',
+            children: null
+          },
+          {
+            id: '2-2',
+            name: '商品列表',
+            icon: 'List',
+            url: '/main/goodsList',
             children: null
           }
         ]
       },
       {
         id: '3',
-        name: '系统管理',
-        icon: 'monitor',
+        name: '个人中心',
+        icon: 'UserFilled',
         children: [
           {
             id: '3-1',
-            name: '用户管理',
-            icon: 'monitor',
+            name: '基本资料',
+            icon: 'User',
+            url: '/main/userInfo',
             children: null
           },
           {
             id: '3-2',
-            icon: 'monitor',
-            name: '部门管理',
+            name: '重置密码',
+            icon: 'Key',
+            url: '/main/resetPassword',
             children: null
           }
         ]
       }
     ]
-
-    const storeDefaultActive = localCache.getCache('defaultActive') ?? '0' // 当前所在菜单
-
-    const routerJump = (item1: any) => { // 路由跳转
+    // 当前所在菜单
+    const storeDefaultActive = localCache.getLocalCache('defaultActive') ?? '0'
+    // 路由跳转
+    const routerJump = (item1: any) => {
       router.push({
         path: item1.url ?? '/not-found'
       })
-
-      localCache.setCache('defaultActive', item1.id + '')
+      localCache.setLocalCache('defaultActive', item1.id + '')
     }
 
-
     return {
-      menuTree,
+      staticMenuTree,
+      dynamicMenuTree,
       routerJump,
       storeDefaultActive
     }

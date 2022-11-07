@@ -1,4 +1,4 @@
-**文档：** https://element.eleme.cn/#/zh-CN/component/dialog#dialog-dui-hua-kuang
+**文档：** `https://element.eleme.cn/#/zh-CN/component/dialog#dialog-dui-hua-kuang`
 
 # 属性
   **visible：** 显示隐藏对话框

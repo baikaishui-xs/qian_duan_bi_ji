@@ -21,18 +21,22 @@
 
 # 一、基础用法
   ```html
-  <el-form :model="formData">
+  <el-form :model="XXXFormInfo">
     <el-form-item label="账号" label-width="100px">
-      <el-input v-model="formData.username" />
+      <el-input v-model="XXXFormInfo.username" clearable />
     </el-form-item>
   </el-form>
   ```
 
   ```js
-  // 表单数据
-  const formData = reactive({
+  // XXX表单信息
+  const XXXFormInfo = reactive({
     username: ''
   })
+
+  return {
+    XXXFormInfo
+  }
   ```
 
 # 二、表单验证
@@ -40,12 +44,15 @@
   
   ## 1、定义验证规则
   ```ts
-  // 表单验证规则
-  const formRules = {
+  // XXX表单验证规则
+  const XXXFormRules = {
     username: [
-      { required: true, trigger: 'blur', message: '不能为空'}, // 不能为空
-      { min: 3, max: 12, message: '长度在 3 到 12 个字符之间', trigger: 'blur' }, // 长度最少 3 位，最多不能超过 10 位
-      { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' } // 手机号格式
+      // 不能为空
+      { required: true, trigger: 'blur', message: '不能为空'},
+      // 长度最少 3 位，最多不能超过 10 位
+      { min: 3, max: 12, message: '长度在 3 到 12 个字符之间', trigger: 'blur' },
+       // 手机号格式
+      { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }
       // { trigger: 'blur', validator: validateImgCode }
     ]
   }
@@ -53,7 +60,7 @@
 
   ## 2、为表单绑定验证规则对象（:rules）
   ```html
-  <el-form :rules="formRules">
+  <el-form :rules="XXXFormRules">
   ```
   
   ## 3、为表单项添加验证规则（prop 属性）
@@ -66,18 +73,24 @@
   ```ts
   import { ElForm } from 'element-plus'
 
-  // 表单预验证
-  const formRef = ref<InstanceType<typeof ElForm>>()
+  // XXX表单实例对象
+  const XXXFormRef = ref<InstanceType<typeof ElForm>>()
+
+  return {
+    XXXFormRef
+  }
   ```
   
   ```html
-  <el-form ref="formRef">
+  <el-form ref="XXXFormRef">
   ```
 
   ## 2、调用表单实例对象上的预验证方法
   ```ts
-  formRef.value?.validate((isOK) => {
+  // XXX表单预验证
+  XXXFormRef.value?.validate((isOK: boolean) => {
     if (isOK) {
+      console.log('表单预验证通过')
     }
   })
   ```
@@ -87,7 +100,7 @@
 
   ## 1、调用 resetFields() 重置表单
   ```js
-  formRef.value?.resetFields() // 表单数据重置
+  XXXFormRef.value?.resetFields() // 表单数据重置
   ```
 
 # 五、数据回显

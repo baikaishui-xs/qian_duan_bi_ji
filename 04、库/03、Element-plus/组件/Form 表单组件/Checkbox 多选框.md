@@ -6,5 +6,9 @@
   ```
 
   ```ts
-  const isxxx = false
+  const isxxx = ref(false)
+
+  return {
+    isxxx
+  }
   ```

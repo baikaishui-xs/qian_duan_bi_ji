@@ -110,10 +110,12 @@
       this.axios = Axios.create(config)
       this.loading = null // 加载动画实例
       this.isShowLoading = false // 是否 开启加载动画
-      this.axios.interceptors.request.use( // 请求拦截器
+      // 请求拦截器
+      this.axios.interceptors.request.use(
         (request) => {
           if (this.isShowLoading) {
-            this.loading = ElLoading.service({ // 开启 Loading 动画
+            // 开启 Loading 动画
+            this.loading = ElLoading.service({
               text: '正在加载中',
             })
           }
@@ -165,15 +167,15 @@
   }
 
   export const request = new ClAxios({
-    baseURL: 'http://152.136.185.210:5000'
+    baseURL: 'https://api.it120.cc/zcr'
   })
 
   export const request1 = new ClAxios({
-    baseURL: 'http://123.207.32.32:8000/'
+    baseURL: 'http://123.207.32.32:8000'
   })
   ```
 
-  -- @/utils/types/request.d.ts
+  -- @/utils/types/新建 request.d.ts
   ```ts
   import type { AxiosRequestConfig } from 'axios'
 
@@ -181,16 +183,15 @@
     isShowLoading?: boolean
     method?: string
   }
-
   ```
 
-  ## 2、使用
+  ## 2、测试
   -- 组件
   ```ts
   import { request, request1 } from '@/utils/request'
 
   request.get({
-    url: '/banner/list'
+    url: '/banner/list',
     isShowLoading: true
   })
 

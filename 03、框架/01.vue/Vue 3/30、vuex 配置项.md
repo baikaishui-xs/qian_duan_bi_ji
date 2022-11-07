@@ -101,3 +101,10 @@
     const demo = store.dispatch('login/demo')
   }
   ```
+
+# 三、解决依赖的 state 数据发生变化后，视图没有更新的问题
+  **原理：** 计算属性
+
+  ```js
+  const childMenu = computed(() => store.state.layout.childMenu)
+  ```
