@@ -327,7 +327,7 @@
   ### 15、测试
   访问 http 跳转到 https 代表成功
 
-# 配置 生产 环境下的接口代理（-- sudo vim /etc/nginx/sites-available/default）
+# 配置 生产 环境下的接口代理（-- sudo vim /etc/nginx/nginx.config）
   ```
   server {
     ...
@@ -348,5 +348,19 @@
       proxy_pass https://api.it120.cc/zcr;
     }
     --
+  }
+  ```
+
+  ## 【可选】路径重写
+  ### 实现原理
+  rewrite 配置项
+
+  ### 例子
+  删除 /api/xioami 这个路径
+
+  ```
+  location /api/xiaomi {
+    proxy_pass http://mall-pre.springboot.cn;
+    rewrite ^/api/xiaomi/(.*)$ /$1 break;
   }
   ```

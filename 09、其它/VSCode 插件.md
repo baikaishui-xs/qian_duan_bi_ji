@@ -322,3 +322,8 @@ rules: {
   **生成头部注释：** com + ctl + i
 
   **生成函数注释：** com + ctl + t
+
+# 十七、volar
+  **解决：** vetur 插件对 ts 支持不友好的问题
+
+  **说明：** 是 vetur 的增强版，vetur 的功能它都有

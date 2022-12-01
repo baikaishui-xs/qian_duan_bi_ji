@@ -1,5 +1,5 @@
-JSON.parse()：将字符串转化为 JSON 对象
-JSON.stringify()：将 JSON 对象转化为字符串
+JSON.parse()：将 JSON 字符串转化为 JSON 对象
+JSON.stringify()：将 JSON 对象转化为 JSON 字符串
 
 # JSON 字符串
   JSON 本质上还是字符串，区别是双引号中只能写对象和数组

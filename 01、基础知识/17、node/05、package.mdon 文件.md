@@ -1,6 +1,3 @@
-/*
-知识点：package.json 文件的作用
-
 作用：包管理配置文件
 
 生成：npm init

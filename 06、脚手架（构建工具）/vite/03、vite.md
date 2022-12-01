@@ -15,15 +15,17 @@
   5、支持 TypeScript、JSX 等语法编译
   6、支持 SourceMap
   7、支持 代码压缩
-  8、支持 扩展其他插件
+  8、支持 扩展其他插件 Z
 
 **官网：** https://cn.vitejs.dev/
 
-**安装：** npm i vite -g
+**安装：** sudo cnpm install -g vite@2.9.7
 
 **常用命令：**
-  1、创建项目：npm init vite-app 项目名称
-  3、打包：npm run dev
+  1、使用开发模式启动项目：npm run dev
+  2、打包项目：npm run build
+  3、使用生产模式启动项目：npm run preview
+
 
 **本地服务器：**
   - **vite 1：** koa

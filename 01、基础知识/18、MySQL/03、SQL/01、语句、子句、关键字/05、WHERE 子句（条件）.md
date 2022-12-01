@@ -5,7 +5,7 @@
 **例子：**
   ```SQL
   -- 查询 status 为 1 的用户
-  select * from users where status=0
+  select * from users where status=1
   -- 查询 id 小于 2 的用户
   select * from users where id < 2
   -- 查询 username 不等于 admin 的用户

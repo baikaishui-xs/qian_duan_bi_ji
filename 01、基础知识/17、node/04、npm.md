@@ -10,6 +10,8 @@
 
 **node_modules 文件夹：** 用来存放所有已安装到项目中的包
 
+**查看全局第三方包存放路径（mac）：** npm root -g
+
 # 常用命令
   **创建 package，json：** npm init -y
   **安装 package-lock.json 配置文件的 dependencies 配置项中记录的所有包：** npm install
@@ -18,7 +20,7 @@
   **安装 全局第三方模块：** npm install 包名 -g
   **安装 指定版本号：** 模块名称@版本号（如：webpack@5.42.1）
   **卸载 第三方模块：** npm uninstall 包名
-  **卸载 全局第三方模块：** npm uninstall 包名 -g
+  **卸载 全局第三方模块：** sudo npm uninstall 包名 -g
   **使用局部 插件：** 在 package.json 中的 scripts 配置项中设置一个别名。如："scripts": { "build": webpack}
 
 # npx（5.2 新增）

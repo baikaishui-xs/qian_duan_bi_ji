@@ -11,16 +11,16 @@
 // 解决方法：async / await（需要 Node 在 v7.6.0 版本以上）
 
 // 使用步骤：
-  // （1）检测 Node 版本是否在 v7.6.0 版本以上
-  // （2）npm init -y
-  // （3）npm install koa
-  // （4）创建 koa 实例对象（ -- app.js）
-  // （5）定义中间件
-  // （6）监听端口
-  // （7）启动服务器（node app.js）
+// （1）检测 Node 版本是否在 v7.6.0 版本以上
+// （2）npm init -y
+// （3）npm install koa
+// （4）创建 koa 实例对象（ -- app.js）
+// （5）定义中间件
+// （6）监听端口
+// （7）启动服务器（node app.js）
 
 const Koa = require('koa')
-const app = new Koa()  // （4）创建 koa 实例对象
+const app = new Koa() // （4）创建 koa 实例对象
 
 // ctx：上下文（web 容器）  next：执行下一个中间件
 // ctx.request：获取 请求对象
@@ -29,22 +29,23 @@ const app = new Koa()  // （4）创建 koa 实例对象
 
 // 疑问：为什么会响应两次相同的数据？
 // 解：第一次是输入地址时发起的请求，第二次是请求 ico 图标发起的请求
-
-app.use((ctx, next) => {  // （5）定义中间件
+// 执行顺序（洋葱模型）：第一层往里走 → 第二层往里走 → 第三层 → 第二层往外走 → 第一层往外走
+app.use((ctx, next) => {
+  // （5）定义中间件
   ctx.response.body = 'hello world'
-  console.log('第一层往里走');
-  next();
-  console.log('第一层往外走');
+  console.log('第一层往里走')
+  next()
+  console.log('第一层往外走')
 })
 
-app.use( async (ctx, next) => {
-  console.log('第二层往里走');
-  next();
-  console.log('第二层往外走');
+app.use(async (ctx, next) => {
+  console.log('第二层往里走')
+  next()
+  console.log('第二层往外走')
 })
 
 app.use((ctx, next) => {
-  console.log('第三层');
+  console.log('第三层')
 })
 
 // -----------------------------------
@@ -70,4 +71,4 @@ app.use((ctx, next) => {
 //   return 'i love the dog'
 // })
 
-app.listen(3000)  // （6）监听端口
+app.listen(3000) // （6）监听端口
