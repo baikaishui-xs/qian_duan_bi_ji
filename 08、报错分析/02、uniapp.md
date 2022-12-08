@@ -41,3 +41,24 @@
 
   **解决方式：** 回退微信开发者工具到上个版本
 
+## 五、
+  ```
+  number is not defined
+  ```
+
+  **说明：** 在 props 配置项中定义类型时，number 应该为大写的 Number
+
+## 六、
+  ```
+  [Vue warn]: Error in v-on handler: "ReferenceError: index is not defined" found in ---> <ArticleList>
+  ```
+
+  **说明：** 找不到 index 这个变量，可能是忘记在前面加 `this.` 了
+
+## 七、
+  ```
+  TypeError: Cannot read property 'type' of undefined
+  [Vue warn]: Error in render: "TypeError: Cannot read property 'type' of undefined" found in
+  ```
+
+  **说明：** type 这个变量或属性为 undefined
