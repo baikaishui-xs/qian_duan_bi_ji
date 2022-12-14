@@ -334,11 +334,7 @@
     requestConfig(config) {
       return new Promise((resolve, reject) => {
         uni.request({
-          url: config.url,
-          method: config.method,
-          // data: {
-          //   text: 'uni.request' 
-          // },
+          ...config,
           // header: {
           //   'custom-header': 'hello' //自定义请求头信息
           // },

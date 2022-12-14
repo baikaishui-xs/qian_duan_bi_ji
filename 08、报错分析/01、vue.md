@@ -89,3 +89,45 @@
 **解释：** 无法读取 null 的属性（读取 ‘【...】’）
 
 **说明：** 【...】变量的内容不能为 null
+
+## 八、
+  ```
+  [vuex] unknown action type: userInfo/phoneLogin
+  ```
+
+  **说明：** 没有找到 userInfo/phoneLogin，可能是名字写错了
+
+  **解决方式：**
+  ```
+  -- 改（旧）
+  userInfo/phoneLogin
+  --
+  -- 改（新）
+  user/phoneLogin
+  --
+  ```
+
+## 九、在插槽中使用数组元素进行判断时报错
+  ```
+  [Vue warn]: Error in render: "TypeError: Cannot read properties of undefined (reading 'id')"
+  found in
+
+  ---> <ArticleList> at pages/index/components/ArticleList.vue
+        at pages/index/index.vue
+  ```
+
+  **原因：** 未知
+
+  **解决方式：** 数组长度不为 0 时，在进行判断
+  -- pages/index/components/ArticleList.vue
+  ```html
+  -- 改（旧）
+  {{userID == item.user.fens[0].id ? '已关注' : '关注' }}
+  --
+  -- 改（新）
+  {{item.user.fens.length !== 0 && userID == item.user.fens[0].id ? '已关注' : '关注' }}
+  --
+  ```
+
+# 十、
+  

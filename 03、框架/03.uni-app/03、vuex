@@ -25,11 +25,11 @@
   （3）将 store 实例对象挂载到 Vue 的实例上（-- main.js）
 
     -- 增
-      ~~ 导入 store 实例对象
+      // 导入 store 实例对象
       import store from './store/store.js'
     --
 
-    const app = new Vuew({
+    const app = new Vue({
       ...App,
 
       -- 增

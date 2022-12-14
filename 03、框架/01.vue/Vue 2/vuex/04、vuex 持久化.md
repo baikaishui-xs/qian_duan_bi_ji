@@ -18,7 +18,7 @@
   `npm i vuex-persistedstate@4.1.0`
 
   ## 2、新建 demo 模块
-  -- store/modules/新建 demo.js
+  -- store/modules/新建 store_demo.js
   ```js
   // 测试模块
 
@@ -66,7 +66,7 @@
   import Vue from 'vue'
   import Vuex from 'vuex'
   import createPersistedState from 'vuex-persistedstate'
-  import demo from '@/store/modules/demo.js'
+  import demo from '@/store/modules/store_demo.js'
 
   Vue.use(Vuex)
 
@@ -76,7 +76,8 @@
     },
     plugins: [
       createPersistedState({ // 数据持久化插件 配置
-        key: 'store', // 本地仓库名字
+        请设置本地仓库名称
+        key: 'xxx-store', // 本地仓库名字
         paths: ['demo'] // 指定需要持久化的模块
       })
     ]

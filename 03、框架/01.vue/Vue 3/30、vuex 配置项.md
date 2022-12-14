@@ -98,7 +98,7 @@
   ### 2、获取 actions 中的 方法
   ```ts
   setup() {
-    const demo = store.dispatch('login/demo')
+    const demo = store.dispatch('demo/login')
   }
   ```
 

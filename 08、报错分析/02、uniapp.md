@@ -62,3 +62,28 @@
   ```
 
   **说明：** type 这个变量或属性为 undefined
+
+## 八、
+  ```
+  TypeError: Cannot read properties of undefined (reading 'get')
+  ```
+
+  **说明：** 配置项写错了
+
+  ```js
+  -- 改（旧）
+  computed: {
+  -- 改（新）
+  components: {
+  --
+
+    ArticleList
+  },
+  ```
+
+## 九、
+  ```
+  reportJSException >>>> exception function:createInstanceContext, exception:white screen cause create instanceContext failed,check js stack ->Uncaught TypeError: Cannot read property 'setItem' of undefined
+  ```
+
+  **说明：** 无法使用 vuex-persistedstate 持久化插件

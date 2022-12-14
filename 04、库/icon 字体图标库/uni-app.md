@@ -22,7 +22,7 @@
   Uncaught Error: Cannot find module './iconfont.woff2?t=1670291831187' at app-view.js:458
   ```
 
-  **解决方式：** 在路径前面加上 ./common/iconfont/
+  **解决方式：** 在路径前面加上 @/common/iconfont/
   -- common/iconfont/iconfont.css
   ```css
   @font-face {
